@@ -8,16 +8,29 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts untuk pilihan Tema Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700&family=Quicksand:wght@400;600;700&family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         header {
-          background-color:#ffb6c1;
+          background-color: #ffb6c1;
           color: #333333;
+          background-size: cover;
+          background-position: center;
         }
         body { 
             font-family: 'Quicksand', sans-serif; 
             background-color: #FAF5FF; 
         }
+        
+        /* Font Utility Classes */
+        .font-quicksand { font-family: 'Quicksand', sans-serif; }
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-roboto { font-family: 'Roboto', sans-serif; }
+        .font-nunito { font-family: 'Nunito', sans-serif; }
+
         .btn-bounce {
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -47,7 +60,7 @@
         }
     </style>
 </head>
-<body class="text-slate-700 min-h-screen pb-12">
+<body id="appBody" class="text-slate-700 min-h-screen pb-12 font-quicksand">
 
     <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleImportExcel(event)">
     <input type="file" id="bank-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleImportBankMutations(event)">
@@ -76,32 +89,39 @@
     <div id="app-content" class="hidden">
         
         <!-- Header / Navbar -->
-        <header class="bg-white/80 backdrop-blur-md border-b-2 border-purple-100 sticky top-0 z-40">
+        <header id="mainHeader" class="bg-white/80 backdrop-blur-md border-b-2 border-purple-100 sticky top-0 z-40 transition-all duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-pink-100 border-2 border-pink-200 rounded-2xl flex items-center justify-center text-2xl text-pink-500 shadow-sm">
-                        🌸
+                    <div id="headerIconContainer" class="w-12 h-12 bg-pink-100 border-2 border-pink-200 rounded-2xl flex items-center justify-center text-2xl text-pink-500 shadow-sm overflow-hidden">
+                        <span id="headerEmoji">🌸</span>
+                        <img id="headerCustomImg" src="" class="w-full h-full object-cover hidden" alt="Custom Logo" />
                     </div>
                     <div>
-                        <h1 class="font-bold text-xl text-purple-900 leading-tight">Tabungan Bela Cantik✨</h1>
-                        <p class="text-xs font-semibold text-purple-400">Keuangan Personal Go To Richy Woman ✨</p>
+                        <h1 class="font-bold text-xl leading-tight">Tabungan Bela Cantik✨</h1>
+                        <p class="text-xs font-semibold opacity-80">Keuangan Personal Go To Richy Woman ✨</p>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <button onclick="changePin()" class="bg-purple-100 hover:bg-purple-200 text-purple-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-purple-200 transition-all btn-bounce">
+                    <button onclick="changePin()" class="bg-purple-100/80 hover:bg-purple-200 text-purple-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-purple-200 transition-all btn-bounce">
                         <i class="fa-solid fa-key mr-1"></i> Ubah PIN
                     </button>
-                    <button onclick="triggerImport()" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-emerald-200 transition-all btn-bounce">
+                    <button onclick="triggerImport()" class="bg-emerald-100/80 hover:bg-emerald-200 text-emerald-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-emerald-200 transition-all btn-bounce">
                         <i class="fa-solid fa-file-import mr-1"></i> Impor Excel
                     </button>
-                    <button onclick="exportExcel()" class="bg-teal-100 hover:bg-teal-200 text-teal-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-teal-200 transition-all btn-bounce">
+                    <button onclick="exportExcel()" class="bg-teal-100/80 hover:bg-teal-200 text-teal-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-teal-200 transition-all btn-bounce">
                         <i class="fa-solid fa-file-excel mr-1"></i> Ekspor Excel
                     </button>
-                    <button onclick="exportCSV()" class="bg-pink-100 hover:bg-pink-200 text-pink-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-pink-200 transition-all btn-bounce hidden sm:inline-block">
+                    <button onclick="exportCSV()" class="bg-pink-100/80 hover:bg-pink-200 text-pink-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-pink-200 transition-all btn-bounce hidden sm:inline-block">
                         <i class="fa-solid fa-download mr-1"></i> CSV
                     </button>
-                    <button onclick="logout()" class="bg-rose-100 hover:bg-rose-200 text-rose-600 text-xs font-bold py-2.5 px-3 rounded-xl border border-rose-200 transition-all btn-bounce">
+                    
+                    <!-- Tombol Setting (⚙️) Baru -->
+                    <button id="openSettingsBtn" onclick="toggleSettingsModal(true)" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl transition-all btn-bounce" title="Pengaturan">
+                        ⚙️ Setting
+                    </button>
+
+                    <button onclick="logout()" class="bg-rose-100/80 hover:bg-rose-200 text-rose-600 text-xs font-bold py-2.5 px-3 rounded-xl border border-rose-200 transition-all btn-bounce">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
@@ -455,6 +475,123 @@
         </main>
     </div>
 
+    <!-- ================= MODAL SETTING INTERAKTIF ================= -->
+    <div id="settingsModal" class="fixed inset-0 bg-purple-900/40 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl border-4 border-purple-200 pastel-shadow overflow-hidden flex flex-col max-h-[90vh]">
+            
+            <!-- Modal Header -->
+            <div class="p-4 bg-purple-50 border-b border-purple-100 flex justify-between items-center">
+                <h3 class="text-base font-bold text-purple-900 flex items-center gap-2">
+                    <span>⚙️</span> Pengaturan Aplikasi
+                </h3>
+                <button onclick="toggleSettingsModal(false)" class="text-purple-400 hover:text-purple-700 text-xl font-bold">&times;</button>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="flex border-b bg-purple-100/50">
+                <button id="tabThemeBtn" onclick="switchSettingTab('theme')" class="flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white">
+                    🎨 Tema Website
+                </button>
+                <button id="tabBackupBtn" onclick="switchSettingTab('backup')" class="flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700">
+                    💾 Backup Data
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div class="p-6 overflow-y-auto flex-1 text-xs">
+                
+                <!-- SUB-BAB 1: Pengaturan Tema Website -->
+                <div id="tabThemeContent" class="space-y-5">
+                    
+                    <!-- Pengaturan Warna -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-purple-900 mb-1">Warna Latar Header</label>
+                            <input type="color" id="headerBgColor" value="#ffb6c1" class="w-full h-10 rounded-xl cursor-pointer border p-1 bg-purple-50">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-purple-900 mb-1">Warna Teks Header</label>
+                            <input type="color" id="headerTextColor" value="#333333" class="w-full h-10 rounded-xl cursor-pointer border p-1 bg-purple-50">
+                        </div>
+                    </div>
+
+                    <!-- Latar Header Kustom (Upload Gambar) -->
+                    <div>
+                        <label class="block font-bold text-purple-900 mb-1">Upload Gambar Latar Header (Kustom)</label>
+                        <input type="file" id="headerBgUpload" accept="image/*" class="text-xs text-purple-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                        <button id="resetBgImgBtn" onclick="resetHeaderBgImage()" class="text-xs text-rose-500 hover:underline ml-2 hidden">Hapus Gambar Latar</button>
+                    </div>
+
+                    <!-- Pengaturan Font Utama -->
+                    <div>
+                        <label class="block font-bold text-purple-900 mb-1">Font Utama Aplikasi</label>
+                        <select id="fontSelect" onchange="previewFontChange(this.value)" class="w-full bg-purple-50 border border-purple-200 rounded-xl p-2.5 font-bold text-purple-900">
+                            <option value="font-quicksand" selected>Quicksand</option>
+                            <option value="font-poppins">Poppins</option>
+                            <option value="font-inter">Inter</option>
+                            <option value="font-roboto">Roboto</option>
+                            <option value="font-nunito">Nunito</option>
+                        </select>
+                    </div>
+
+                    <!-- Pemilihan Icon / Logo Header -->
+                    <div>
+                        <label class="block font-bold text-purple-900 mb-2">Icon / Logo Header</label>
+                        <div class="flex items-center gap-2 mb-3">
+                            <button type="button" onclick="selectEmoji('🌸')" class="emoji-option text-xl p-2 border border-purple-200 rounded-xl hover:bg-purple-100">🌸</button>
+                            <button type="button" onclick="selectEmoji('🚀')" class="emoji-option text-xl p-2 border border-purple-200 rounded-xl hover:bg-purple-100">🚀</button>
+                            <button type="button" onclick="selectEmoji('⚡')" class="emoji-option text-xl p-2 border border-purple-200 rounded-xl hover:bg-purple-100">⚡</button>
+                            <button type="button" onclick="selectEmoji('🔥')" class="emoji-option text-xl p-2 border border-purple-200 rounded-xl hover:bg-purple-100">🔥</button>
+                            <button type="button" onclick="selectEmoji('💎')" class="emoji-option text-xl p-2 border border-purple-200 rounded-xl hover:bg-purple-100">💎</button>
+                        </div>
+                        <p class="text-[11px] text-purple-400 mb-1">Atau Upload Logo Kustom:</p>
+                        <input type="file" id="headerIconUpload" accept="image/*" class="text-xs text-purple-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                    </div>
+
+                </div>
+
+                <!-- SUB-BAB 2: Backup Data Otomatis & Manual -->
+                <div id="tabBackupContent" class="space-y-5 hidden">
+                    
+                    <!-- Input Email Tujuan -->
+                    <div>
+                        <label class="block font-bold text-purple-900 mb-1">Alamat Email Tujuan Backup</label>
+                        <input type="email" id="backupEmail" placeholder="nama@email.com" class="w-full bg-purple-50 border border-purple-200 rounded-xl p-2.5 font-bold text-purple-900 focus:outline-none focus:border-pink-400">
+                    </div>
+
+                    <!-- Toggle Backup Otomatis Akhir Bulan -->
+                    <div class="flex items-center justify-between border-t border-b border-purple-100 py-3">
+                        <div>
+                            <p class="font-bold text-purple-900">Backup Otomatis Setiap Akhir Bulan</p>
+                            <p class="text-[11px] text-purple-400">Sistem mendeteksi akhir bulan otomatis secara periodik & menyimpan status di localStorage.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="autoBackupToggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-purple-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-purple-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- Action Button Manual -->
+                    <div class="pt-2">
+                        <button onclick="triggerManualBackup()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded-xl transition-all btn-bounce shadow-md flex items-center justify-center gap-2">
+                            <span>📤</span> Kirim Backup Sekarang
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-purple-50 border-t border-purple-100 flex justify-end">
+                <button onclick="saveThemeSettings()" class="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-5 rounded-xl transition-all btn-bounce">
+                    Simpan Pengaturan
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- ================= MODAL EDIT TRANSAKSI HARIAN ================= -->
     <div id="edit-modal" class="fixed inset-0 bg-purple-900/40 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-6 max-w-md w-full border-4 border-pink-200 pastel-shadow">
@@ -605,7 +742,7 @@
             pemasukan: ['Gaji 💰', 'Bonus 🎁', 'Investasi 📈', 'Penjualan 🛍️', 'Lainnya 🌸']
         };
 
-        let pin = localStorage.getItem('bela_pin') || '1234';
+        let pin = localStorage.getItem('bela_pin') || '0000';
         let isLoggedIn = sessionStorage.getItem('bela_logged') === 'true';
         let transactions = JSON.parse(localStorage.getItem('bela_transactions')) || [];
         let bankAccounts = JSON.parse(localStorage.getItem('bela_banks')) || ['BCA', 'Mandiri'];
@@ -615,6 +752,9 @@
         ];
         let debts = JSON.parse(localStorage.getItem('bela_debts')) || [];
         
+        let currentCustomBg = null;
+        let currentCustomIcon = null;
+
         let myChart = null;
         let myBankChart = null;
 
@@ -628,6 +768,9 @@
             }
             document.getElementById('date').valueAsDate = new Date();
             document.getElementById('mut-date').valueAsDate = new Date();
+            
+            initThemeEvents();
+            loadSettings();
         });
 
         function handleLogin(e) {
@@ -707,6 +850,188 @@
             renderDebts();
             updateDashboardStats();
             updateCharts();
+        }
+
+        // ================= SETTING MODAL & TEMA LOGIC =================
+        function toggleSettingsModal(show) {
+            document.getElementById('settingsModal').classList.toggle('hidden', !show);
+        }
+
+        function switchSettingTab(tab) {
+            const themeBtn = document.getElementById('tabThemeBtn');
+            const backupBtn = document.getElementById('tabBackupBtn');
+            const themeContent = document.getElementById('tabThemeContent');
+            const backupContent = document.getElementById('tabBackupContent');
+
+            if (tab === 'theme') {
+                themeBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white";
+                backupBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700";
+                themeContent.classList.remove('hidden');
+                backupContent.classList.add('hidden');
+            } else {
+                backupBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white";
+                themeBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700";
+                backupContent.classList.remove('hidden');
+                themeContent.classList.add('hidden');
+            }
+        }
+
+        function initThemeEvents() {
+            const headerBgColorInput = document.getElementById('headerBgColor');
+            const headerTextColorInput = document.getElementById('headerTextColor');
+            const headerBgUpload = document.getElementById('headerBgUpload');
+            const headerIconUpload = document.getElementById('headerIconUpload');
+            const mainHeader = document.getElementById('mainHeader');
+
+            headerBgColorInput.addEventListener('input', (e) => {
+                if (!currentCustomBg) mainHeader.style.backgroundColor = e.target.value;
+            });
+
+            headerTextColorInput.addEventListener('input', (e) => {
+                mainHeader.style.color = e.target.value;
+            });
+
+            headerBgUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        currentCustomBg = evt.target.result;
+                        mainHeader.style.backgroundImage = `url('${currentCustomBg}')`;
+                        document.getElementById('resetBgImgBtn').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            headerIconUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        currentCustomIcon = evt.target.result;
+                        document.getElementById('headerCustomImg').src = currentCustomIcon;
+                        document.getElementById('headerCustomImg').classList.remove('hidden');
+                        document.getElementById('headerEmoji').classList.add('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function resetHeaderBgImage() {
+            currentCustomBg = null;
+            document.getElementById('headerBgUpload').value = '';
+            const mainHeader = document.getElementById('mainHeader');
+            mainHeader.style.backgroundImage = 'none';
+            mainHeader.style.backgroundColor = document.getElementById('headerBgColor').value;
+            document.getElementById('resetBgImgBtn').classList.add('hidden');
+        }
+
+        function previewFontChange(fontClass) {
+            const body = document.getElementById('appBody');
+            body.className = body.className.replace(/font-\w+/g, '');
+            body.classList.add(fontClass);
+        }
+
+        function selectEmoji(emoji) {
+            document.getElementById('headerEmoji').textContent = emoji;
+            document.getElementById('headerEmoji').classList.remove('hidden');
+            document.getElementById('headerCustomImg').classList.add('hidden');
+            currentCustomIcon = null;
+            document.getElementById('headerIconUpload').value = '';
+        }
+
+        function saveThemeSettings() {
+            const settings = {
+                bgColor: document.getElementById('headerBgColor').value,
+                textColor: document.getElementById('headerTextColor').value,
+                customBg: currentCustomBg,
+                font: document.getElementById('fontSelect').value,
+                emojiIcon: document.getElementById('headerEmoji').textContent,
+                customIcon: currentCustomIcon,
+                email: document.getElementById('backupEmail').value,
+                autoBackup: document.getElementById('autoBackupToggle').checked
+            };
+
+            localStorage.setItem('bela_theme_settings', JSON.stringify(settings));
+            alert("Pengaturan tema & backup berhasil disimpan!");
+            toggleSettingsModal(false);
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('bela_theme_settings');
+            if (!saved) return;
+
+            const settings = JSON.parse(saved);
+            const mainHeader = document.getElementById('mainHeader');
+
+            document.getElementById('headerBgColor').value = settings.bgColor || "#ffb6c1";
+            document.getElementById('headerTextColor').value = settings.textColor || "#333333";
+            document.getElementById('fontSelect').value = settings.font || "font-quicksand";
+            document.getElementById('backupEmail').value = settings.email || "";
+            document.getElementById('autoBackupToggle').checked = !!settings.autoBackup;
+
+            mainHeader.style.color = settings.textColor;
+
+            if (settings.customBg) {
+                currentCustomBg = settings.customBg;
+                mainHeader.style.backgroundImage = `url('${currentCustomBg}')`;
+                document.getElementById('resetBgImgBtn').classList.remove('hidden');
+            } else {
+                mainHeader.style.backgroundColor = settings.bgColor;
+            }
+
+            previewFontChange(settings.font);
+
+            if (settings.customIcon) {
+                currentCustomIcon = settings.customIcon;
+                document.getElementById('headerCustomImg').src = currentCustomIcon;
+                document.getElementById('headerCustomImg').classList.remove('hidden');
+                document.getElementById('headerEmoji').classList.add('hidden');
+            } else if (settings.emojiIcon) {
+                document.getElementById('headerEmoji').textContent = settings.emojiIcon;
+            }
+
+            checkAutoBackupPeriodically();
+        }
+
+        // ================= BACKUP AUTOMATIC & MANUAL LOGIC =================
+        function triggerManualBackup(isAuto = false) {
+            const email = document.getElementById('backupEmail').value || "admin@example.com";
+            
+            // Generate dan Unduh Berkas Excel Cadangan
+            exportExcel();
+
+            // Simulasi pemicu pengiriman via Email / mailto:
+            const subject = encodeURIComponent(`Backup Data Tabungan Rich Woman - ${new Date().toLocaleDateString()}`);
+            const body = encodeURIComponent(`Halo,\n\nBerikut adalah pemicu pencadangan data otomatis/manual aplikasi Anda.\n\nStatus: ${isAuto ? 'Otomatis (Akhir Bulan)' : 'Manual'}\nWaktu: ${new Date().toLocaleString()}\nEmail Tujuan: ${email}`);
+            
+            setTimeout(() => {
+                window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+            }, 500);
+
+            if (!isAuto) {
+                alert(`Pengiriman backup data berhasil dipicu! File Excel telah terunduh dan draf email disiapkan ke: ${email}`);
+            }
+        }
+
+        function checkAutoBackupPeriodically() {
+            const isAutoEnabled = document.getElementById('autoBackupToggle').checked;
+            if (!isAutoEnabled) return;
+
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            // Cek apakah hari ini adalah hari terakhir di bulan berjalan
+            const isLastDayOfMonth = tomorrow.getDate() === 1;
+            const backupKey = `last_auto_backup_${today.getFullYear()}_${today.getMonth()}`;
+
+            if (isLastDayOfMonth && !localStorage.getItem(backupKey)) {
+                triggerManualBackup(true);
+                localStorage.setItem(backupKey, "true");
+            }
         }
 
         // ================= TRANSAKSI HARIAN LOGIC =================
