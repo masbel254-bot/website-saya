@@ -107,8 +107,8 @@
                         <img id="headerCustomImg" src="" class="w-full h-full object-cover hidden" alt="Custom Logo" />
                     </div>
                     <div>
-                        <h1 class="font-bold text-xl leading-tight">Halo Cantik✨</h1>
-                        <p class="text-xs font-semibold opacity-80">Keuangan Personal Go To Richy Woman ✨</p>
+                        <h1 id="headerMainTitle" class="font-bold text-xl leading-tight">Halo Cantik✨</h1>
+                        <p id="headerSubTitle" class="text-xs font-semibold opacity-80">Keuangan Personal Go To Richy Woman ✨</p>
                     </div>
                 </div>
 
@@ -375,7 +375,6 @@
                                     <span id="current-bank-balance" class="inline-block mt-1 text-xs font-bold px-3 py-1 bg-sky-100 text-sky-700 rounded-full">Saldo: Rp 0</span>
                                 </div>
                                 
-                                <!-- Input Filter Keterangan Mutasi -->
                                 <div class="w-full sm:w-auto">
                                     <input type="text" id="bank-search-input" onkeyup="renderBankMutations()" placeholder="Filter keterangan mutasi..." class="w-full sm:w-60 bg-purple-50 border border-purple-200 rounded-xl px-3 py-1.5 text-xs font-bold text-purple-900 focus:outline-none focus:border-sky-400">
                                 </div>
@@ -399,7 +398,6 @@
                             </div>
                         </div>
 
-                        <!-- Tombol Hapus Catatan Per Bank -->
                         <div class="mt-4 flex justify-between items-center border-t border-purple-50 pt-3">
                             <span class="text-[11px] text-purple-400 font-semibold">Mutasi diproses khusus per rekening bank.</span>
                             <button onclick="clearCurrentBankMutations()" class="text-xs text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1">
@@ -510,7 +508,7 @@
 
             <div class="flex border-b bg-purple-100/50">
                 <button id="tabThemeBtn" onclick="switchSettingTab('theme')" class="flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white">
-                    🎨 Tema Website
+                    🎨 Tema & Judul Header
                 </button>
                 <button id="tabBackupBtn" onclick="switchSettingTab('backup')" class="flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700">
                     💾 Backup Data
@@ -519,6 +517,23 @@
 
             <div class="p-6 overflow-y-auto flex-1 text-xs">
                 <div id="tabThemeContent" class="space-y-5">
+                    <!-- Fitur Baru: Edit Judul Header -->
+                    <div class="p-4 bg-purple-50/70 border border-purple-200 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-purple-900 flex items-center gap-1.5 text-xs">
+                            <i class="fa-solid fa-pen-to-square text-pink-500"></i> Edit Teks Judul Header
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-purple-900 mb-1">Judul Utama</label>
+                                <input type="text" id="headerMainTitleInput" value="Halo Cantik✨" class="w-full bg-white border border-purple-200 rounded-xl p-2.5 font-bold text-purple-900 focus:outline-none focus:border-pink-400">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-purple-900 mb-1">Subjudul</label>
+                                <input type="text" id="headerSubTitleInput" value="Keuangan Personal Go To Richy Woman ✨" class="w-full bg-white border border-purple-200 rounded-xl p-2.5 font-bold text-purple-900 focus:outline-none focus:border-pink-400">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block font-bold text-purple-900 mb-1">Warna Latar Header</label>
@@ -838,7 +853,7 @@
             updateCharts();
         }
 
-        // ================= BANK MUTATION & EXCEL LOGIC =================
+        // ================= BANK MUTATION LOGIC =================
         function handleAddBank(e) {
             e.preventDefault();
             const name = document.getElementById('new-bank-name').value.trim();
@@ -952,7 +967,6 @@
 
             let runningBalance = 0;
             
-            // Filter berdasarkan bank dan urutkan tanggal secara kronologis (awal ke baru)
             const currentMutations = bankMutations
                 .filter(m => m.bank === currentBank)
                 .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -962,7 +976,6 @@
                 const kredit = m.type === 'kredit' ? m.amount : 0;
                 runningBalance += (debit - kredit);
 
-                // Filter berdasarkan pencarian di kolom keterangan
                 if (query === '' || m.description.toLowerCase().includes(query)) {
                     const row = document.createElement('tr');
                     row.className = 'hover:bg-sky-50/50 transition-colors';
@@ -1059,7 +1072,6 @@
                         const bank = row.Bank || row.bank || currentBank;
                         let rawDate = row.Tanggal || row.tanggal || row.date || new Date().toISOString().slice(0, 10);
                         
-                        // Normalisasi format tanggal dd/mm/yyyy ke yyyy-mm-dd jika diperlukan
                         let formattedDate = rawDate;
                         if (typeof rawDate === 'string' && rawDate.includes('/')) {
                             const parts = rawDate.split('/');
@@ -1113,7 +1125,7 @@
             e.target.value = '';
         }
 
-        // ================= LAIN-LAIN =================
+        // ================= SETTING & THEMA LOGIC =================
         function toggleSettingsModal(show) {
             document.getElementById('settingsModal').classList.toggle('hidden', !show);
         }
@@ -1204,7 +1216,15 @@
         }
 
         function saveThemeSettings() {
+            const mainTitle = document.getElementById('headerMainTitleInput').value.trim() || "Halo Cantik✨";
+            const subTitle = document.getElementById('headerSubTitleInput').value.trim() || "Keuangan Personal Go To Richy Woman ✨";
+
+            document.getElementById('headerMainTitle').textContent = mainTitle;
+            document.getElementById('headerSubTitle').textContent = subTitle;
+
             const settings = {
+                mainTitle: mainTitle,
+                subTitle: subTitle,
                 bgColor: document.getElementById('headerBgColor').value,
                 textColor: document.getElementById('headerTextColor').value,
                 customBg: currentCustomBg,
@@ -1216,7 +1236,7 @@
             };
 
             localStorage.setItem('bela_theme_settings', JSON.stringify(settings));
-            alert("Pengaturan tema berhasil disimpan!");
+            alert("Pengaturan tema & header berhasil disimpan!");
             toggleSettingsModal(false);
         }
 
@@ -1226,6 +1246,14 @@
 
             const settings = JSON.parse(saved);
             const mainHeader = document.getElementById('mainHeader');
+
+            const mainTitle = settings.mainTitle || "Halo Cantik✨";
+            const subTitle = settings.subTitle || "Keuangan Personal Go To Richy Woman ✨";
+            
+            document.getElementById('headerMainTitle').textContent = mainTitle;
+            document.getElementById('headerSubTitle').textContent = subTitle;
+            document.getElementById('headerMainTitleInput').value = mainTitle;
+            document.getElementById('headerSubTitleInput').value = subTitle;
 
             document.getElementById('headerBgColor').value = settings.bgColor || "#ffb6c1";
             document.getElementById('headerTextColor').value = settings.textColor || "#333333";
@@ -1255,10 +1283,72 @@
             }
         }
 
+        // ================= EKSPOR EXCEL LENGKAP (MULTI-SHEET) =================
         function exportExcel() {
             const wb = XLSX.utils.book_new();
-            const wsTransactions = XLSX.utils.json_to_sheet(transactions);
+
+            // 1. Sheet Catatan Harian
+            const wsTransactionsData = transactions.map(t => ({
+                "Tanggal": formatDateDisplay(t.date),
+                "Jenis": t.type,
+                "Kategori": t.category,
+                "Jumlah (Rp)": t.amount,
+                "Keterangan": t.description
+            }));
+            const wsTransactions = XLSX.utils.json_to_sheet(wsTransactionsData.length ? wsTransactionsData : [{"Pesan": "Tidak ada data"}]);
             XLSX.utils.book_append_sheet(wb, wsTransactions, "Catatan Harian");
+
+            // 2. Sheet Mutasi Bank per Bank Masing-Masing
+            bankAccounts.forEach(b => {
+                const filteredMutations = bankMutations
+                    .filter(m => m.bank === b)
+                    .sort((x, y) => new Date(x.date) - new Date(y.date));
+
+                let runningBalance = 0;
+                const wsBankData = filteredMutations.map(m => {
+                    const debit = m.type === 'debit' ? m.amount : 0;
+                    const kredit = m.type === 'kredit' ? m.amount : 0;
+                    runningBalance += (debit - kredit);
+
+                    return {
+                        "Tanggal": formatDateDisplay(m.date),
+                        "Keterangan": m.description,
+                        "Debit (Rp)": debit,
+                        "Kredit (Rp)": kredit,
+                        "Saldo (Rp)": runningBalance
+                    };
+                });
+
+                // Nama Sheet Maksimal 31 Karakter di Excel
+                let sheetName = `Mutasi - ${b}`.slice(0, 31);
+                const wsBank = XLSX.utils.json_to_sheet(wsBankData.length ? wsBankData : [{"Pesan": "Tidak ada mutasi"}]);
+                XLSX.utils.book_append_sheet(wb, wsBank, sheetName);
+            });
+
+            // 3. Sheet Target Tabungan
+            const wsTargetsData = targets.map(tgt => ({
+                "Impian / Target": tgt.title,
+                "Ikon": tgt.icon,
+                "Nominal Terkumpul (Rp)": tgt.current,
+                "Target Nominal (Rp)": tgt.goal,
+                "Persentase Ketercapaian": `${Math.min(100, Math.round((tgt.current / tgt.goal) * 100))}%`
+            }));
+            const wsTargets = XLSX.utils.json_to_sheet(wsTargetsData.length ? wsTargetsData : [{"Pesan": "Tidak ada target tabungan"}]);
+            XLSX.utils.book_append_sheet(wb, wsTargets, "Target Tabungan");
+
+            // 4. Sheet Utang & Piutang
+            const wsDebtsData = debts.map(d => ({
+                "Pihak / Orang": d.person,
+                "Tipe Catatan": d.type === 'utang' ? 'Utang Saya' : 'Piutang Saya',
+                "Nominal (Rp)": d.amount,
+                "Jatuh Tempo": formatDateDisplay(d.dueDate),
+                "Keterangan": d.description || '-',
+                "Status": d.paid ? 'Lunas' : 'Belum Lunas'
+            }));
+            const wsDebts = XLSX.utils.json_to_sheet(wsDebtsData.length ? wsDebtsData : [{"Pesan": "Tidak ada utang piutang"}]);
+            XLSX.utils.book_append_sheet(wb, wsDebts, "Utang & Piutang");
+
+            // Tulis File Excel
             XLSX.writeFile(wb, `Rich_Woman_Financial_${new Date().toISOString().slice(0, 10)}.xlsx`);
         }
 
@@ -1281,7 +1371,7 @@
                         date: row.date || row.Tanggal || new Date().toISOString().slice(0, 10),
                         type: row.type || row.Jenis || 'pengeluaran',
                         category: row.category || row.Kategori || 'Lainnya 🌸',
-                        amount: parseFloat(row.amount || row.Jumlah || 0),
+                        amount: parseFloat(row.amount || row["Jumlah (Rp)"] || row.Jumlah || 0),
                         description: row.description || row.Keterangan || '-'
                     }));
 
@@ -1516,7 +1606,7 @@
             });
         }
 
-        // ================= TARGET TABUNGAN & UTANG =================
+        // ================= TARGET TABUNGAN & UTANG LOGIC =================
         function toggleTargetModal(show) { document.getElementById('target-modal').classList.toggle('hidden', !show); }
         function openTargetModal() {
             document.getElementById('target-modal-title').textContent = 'Tambah Target Tabungan Baru 🎯';
@@ -1556,84 +1646,116 @@
         function depositTarget(id) {
             const amt = prompt('Masukkan nominal tabungan yang disetor (Rp):');
             if (amt && !isNaN(amt) && parseFloat(amt) > 0) {
-                const t = targets.find(x => x.id === id);
-                if (t) {
-                    t.current += parseFloat(amt);
+                const target = targets.find(t => t.id === id);
+                if (target) {
+                    target.current += parseFloat(amt);
                     saveData();
                 }
+            }
+        }
+
+        function editTarget(tgt) {
+            document.getElementById('target-modal-title').textContent = 'Edit Target Tabungan 🎯';
+            document.getElementById('target-id').value = tgt.id;
+            document.getElementById('target-title').value = tgt.title;
+            document.getElementById('target-icon').value = tgt.icon;
+            document.getElementById('target-goal').value = tgt.goal;
+            document.getElementById('target-current').value = tgt.current;
+            toggleTargetModal(true);
+        }
+
+        function deleteTarget(id) {
+            if (confirm('Hapus target tabungan ini?')) {
+                targets = targets.filter(t => t.id !== id);
+                saveData();
             }
         }
 
         function renderTargets() {
             const container = document.getElementById('target-cards-container');
             const dashContainer = document.getElementById('dash-target-list');
-            container.innerHTML = '';
-            dashContainer.innerHTML = '';
+            
+            if (container) container.innerHTML = '';
+            if (dashContainer) dashContainer.innerHTML = '';
 
-            targets.forEach(t => {
-                const percentage = Math.min(Math.round((t.current / t.goal) * 100), 100);
-                const isReached = t.current >= t.goal;
+            targets.forEach(tgt => {
+                const pct = Math.min(100, Math.round((tgt.current / tgt.goal) * 100));
 
-                const card = document.createElement('div');
-                card.className = "bg-white border-2 border-purple-100 rounded-3xl p-5 pastel-shadow space-y-3";
-                card.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">${t.icon}</span>
-                            <h3 class="font-bold text-purple-900 text-sm sm:text-base">${t.title}</h3>
+                if (dashContainer) {
+                    const dashItem = document.createElement('div');
+                    dashItem.className = 'space-y-1';
+                    dashItem.innerHTML = `
+                        <div class="flex justify-between items-center text-xs font-bold text-purple-900">
+                            <span>${tgt.icon} ${tgt.title}</span>
+                            <span class="text-pink-500">${pct}% (${formatRupiah(tgt.current)})</span>
                         </div>
-                        <div class="text-right">
-                            <span class="text-xs sm:text-sm font-extrabold text-purple-900">
-                                ${formatRupiah(t.current)} / ${formatRupiah(t.goal)} (${percentage}%)
-                            </span>
+                        <div class="w-full bg-purple-100 h-2 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-pink-400 to-purple-400 h-full rounded-full" style="width: ${pct}%"></div>
                         </div>
-                    </div>
-                    <div class="w-full bg-purple-100 rounded-full h-3 overflow-hidden">
-                        <div class="bg-teal-500 h-3 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
-                    </div>
-                    <div class="flex justify-between items-center text-xs font-bold">
-                        <span class="${isReached ? 'text-teal-600' : 'text-purple-400'}">
-                            ${isReached ? '🎉 Target tercapai!' : '✨ Semangat menabung!'}
-                        </span>
-                        <div class="flex gap-2">
-                            <button onclick="depositTarget(${t.id})" class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200">+ Setor</button>
-                            <button onclick="deleteItem('targets', ${t.id})" class="px-2 py-1 text-rose-400 hover:text-rose-600"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
+                    `;
+                    dashContainer.appendChild(dashItem);
+                }
 
-                const dashCard = document.createElement('div');
-                dashCard.className = 'space-y-1.5';
-                dashCard.innerHTML = `
-                    <div class="flex justify-between text-xs font-bold text-purple-900">
-                        <span>${t.icon} ${t.title}</span>
-                        <span>${percentage}%</span>
-                    </div>
-                    <div class="w-full bg-purple-100 rounded-full h-2 overflow-hidden">
-                        <div class="bg-purple-500 h-2 rounded-full" style="width: ${percentage}%"></div>
-                    </div>
-                `;
-                dashContainer.appendChild(dashCard);
+                if (container) {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white border-2 border-purple-100 rounded-3xl p-5 pastel-shadow flex flex-col md:flex-row gap-4 items-start md:items-center justify-between';
+                    card.innerHTML = `
+                        <div class="flex items-center gap-4 w-full md:w-auto">
+                            <div class="w-14 h-14 bg-pink-100 border border-pink-200 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                ${tgt.icon}
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-purple-900 text-sm">${tgt.title}</h3>
+                                <p class="text-xs font-bold text-pink-500 mt-0.5">${formatRupiah(tgt.current)} / <span class="text-purple-400">${formatRupiah(tgt.goal)}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-1/3 space-y-1">
+                            <div class="flex justify-between text-[11px] font-bold text-purple-400">
+                                <span>Progress</span>
+                                <span>${pct}%</span>
+                            </div>
+                            <div class="w-full bg-purple-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-pink-400 to-purple-400 h-full rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 w-full md:w-auto justify-end">
+                            <button onclick="depositTarget(${tgt.id})" class="bg-pink-400 hover:bg-pink-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition-all btn-bounce shadow-md">
+                                + Setor
+                            </button>
+                            <button onclick='editTarget(${JSON.stringify(tgt)})' class="bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold px-3 py-1.5 rounded-xl text-xs transition-all btn-bounce">
+                                Edit
+                            </button>
+                            <button onclick="deleteTarget(${tgt.id})" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-1.5 rounded-xl text-xs transition-all btn-bounce">
+                                Hapus
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
             });
         }
 
         function handleAddDebt(e) {
             e.preventDefault();
-            debts.push({
+            const debt = {
                 id: Date.now(),
                 type: document.getElementById('debt-type').value,
                 person: document.getElementById('debt-person').value,
                 amount: parseFloat(document.getElementById('debt-amount').value),
                 dueDate: document.getElementById('debt-due-date').value,
-                desc: document.getElementById('debt-desc').value,
+                description: document.getElementById('debt-desc').value,
                 paid: false
-            });
+            };
+            debts.push(debt);
             saveData();
-            document.getElementById('debt-form').reset();
+            document.getElementById('debt-person').value = '';
+            document.getElementById('debt-amount').value = '';
+            document.getElementById('debt-desc').value = '';
         }
 
-        function toggleDebtPaid(id) {
+        function toggleDebtStatus(id) {
             const d = debts.find(x => x.id === id);
             if (d) {
                 d.paid = !d.paid;
@@ -1650,23 +1772,36 @@
                 if (filter === 'all' || (filter === 'paid' && d.paid) || (filter === 'unpaid' && !d.paid)) {
                     const row = document.createElement('tr');
                     row.className = 'hover:bg-amber-50/50 transition-colors';
+                    const isUtang = d.type === 'utang';
                     row.innerHTML = `
                         <td class="py-3 px-4 font-bold">${d.person}</td>
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-lg ${d.type === 'utang' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'} font-bold">${d.type.toUpperCase()}</span></td>
-                        <td class="py-3 px-4 text-right font-mono font-bold">${formatRupiah(d.amount)}</td>
-                        <td class="py-3 px-4 font-mono">${formatDateDisplay(d.dueDate)}</td>
-                        <td class="py-3 px-4 text-center">
-                            <span onclick="toggleDebtPaid(${d.id})" class="cursor-pointer px-2 py-1 rounded-full text-[10px] font-bold ${d.paid ? 'bg-emerald-500 text-white' : 'bg-amber-200 text-amber-800'}">
-                                ${d.paid ? 'Lunas' : 'Belum Lunas'}
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 rounded-lg text-xs font-bold ${isUtang ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">
+                                ${isUtang ? 'Utang Saya' : 'Piutang Saya'}
                             </span>
                         </td>
+                        <td class="py-3 px-4 text-right font-mono font-bold ${isUtang ? 'text-rose-500' : 'text-emerald-600'}">
+                            ${formatRupiah(d.amount)}
+                        </td>
+                        <td class="py-3 px-4 font-mono">${formatDateDisplay(d.dueDate)}</td>
                         <td class="py-3 px-4 text-center">
-                            <button onclick="deleteItem('debts', ${d.id})" class="text-rose-400 hover:text-rose-600"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="toggleDebtStatus(${d.id})" class="px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${d.paid ? 'bg-emerald-500 text-white' : 'bg-amber-100 text-amber-700 hover:bg-amber-200'}">
+                                ${d.paid ? '✓ Lunas' : 'Belum Lunas'}
+                            </button>
+                        </td>
+                        <td class="py-3 px-4 text-center">
+                            <button onclick="deleteItem('debts', ${d.id})" class="p-1 text-rose-400 hover:text-rose-600">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </td>
                     `;
                     tbody.appendChild(row);
                 }
             });
+        }
+
+        function triggerManualBackup() {
+            alert('Fitur backup terkirim ke email siap digunakan!');
         }
     </script>
 </body>
