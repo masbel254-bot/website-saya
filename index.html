@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Fonts untuk pilihan Tema Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700&family=Quicksand:wght@400;600;700&family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -21,15 +23,17 @@
         }
         body { 
             font-family: 'Quicksand', sans-serif; 
-            background-color: #FAF5FF; 
+            background-color: #ad1a50; 
         }
         
-        /* Font Utility Classes */
+        /* ont Utility Classes - Standar & Kasual */
         .font-quicksand { font-family: 'Quicksand', sans-serif; }
         .font-poppins { font-family: 'Poppins', sans-serif; }
         .font-inter { font-family: 'Inter', sans-serif; }
         .font-roboto { font-family: 'Roboto', sans-serif; }
         .font-nunito { font-family: 'Nunito', sans-serif; }  
+
+        /* Font Utility Classes - Formal & Profesional */
         .font-merriweather { font-family: 'Merriweather', serif; }
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-lora { font-family: 'Lora', serif; }
@@ -105,7 +109,7 @@
                         <img id="headerCustomImg" src="" class="w-full h-full object-cover hidden" alt="Custom Logo" />
                     </div>
                     <div>
-                        <h1 class="font-bold text-xl leading-tight">Tabungan Bela Cantik✨</h1>
+                        <h1 class="font-bold text-xl leading-tight">Halo Cantik✨</h1>
                         <p class="text-xs font-semibold opacity-80">Keuangan Personal Go To Richy Woman ✨</p>
                     </div>
                 </div>
@@ -119,9 +123,6 @@
                     </button>
                     <button onclick="exportExcel()" class="bg-teal-100/80 hover:bg-teal-200 text-teal-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-teal-200 transition-all btn-bounce">
                         <i class="fa-solid fa-file-excel mr-1"></i> Ekspor Excel
-                    </button>
-                    <button onclick="exportCSV()" class="bg-pink-100/80 hover:bg-pink-200 text-pink-700 text-xs font-bold py-2.5 px-3 rounded-xl border border-pink-200 transition-all btn-bounce hidden sm:inline-block">
-                        <i class="fa-solid fa-download mr-1"></i> CSV
                     </button>
                     
                     <!-- Tombol Setting (⚙️) Baru -->
