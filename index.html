@@ -9,10 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts untuk pilihan Tema Font -->
+    <!-- Google Fonts (Modern, Kasual, Formal, & Profesional) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700&family=Quicksand:wght@400;600;700&family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:wght@400;600&family=Inter:wght@400;600;700&family=Lato:wght@400;700&family=Lora:wght@400;600&family=Merriweather:wght@400;700&family=Montserrat:wght@500;700&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@600;800&family=Poppins:wght@400;600;700&family=Quicksand:wght@400;600;700&family=Roboto:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
         header {
@@ -22,11 +22,11 @@
           background-position: center;
         }
         body { 
-            font-family: 'Quicksand', sans-serif; 
-            background-color: #ad1a50; 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #fcebed; 
         }
         
-        /* ont Utility Classes - Standar & Kasual */
+        /* Font Utility Classes - Standar & Kasual */
         .font-quicksand { font-family: 'Quicksand', sans-serif; }
         .font-poppins { font-family: 'Poppins', sans-serif; }
         .font-inter { font-family: 'Inter', sans-serif; }
@@ -535,11 +535,23 @@
                     <div>
                         <label class="block font-bold text-purple-900 mb-1">Font Utama Aplikasi</label>
                         <select id="fontSelect" onchange="previewFontChange(this.value)" class="w-full bg-purple-50 border border-purple-200 rounded-xl p-2.5 font-bold text-purple-900">
-                            <option value="font-quicksand" selected>Quicksand</option>
-                            <option value="font-poppins">Poppins</option>
-                            <option value="font-inter">Inter</option>
-                            <option value="font-roboto">Roboto</option>
-                            <option value="font-nunito">Nunito</option>
+                            <optgroup label="Standar & Kasual">
+                                <option value="font-quicksand" selected>Quicksand</option>
+                                <option value="font-poppins">Poppins</option>
+                                <option value="font-inter">Inter</option>
+                                <option value="font-roboto">Roboto</option>
+                                <option value="font-nunito">Nunito</option>
+                            </optgroup>
+                            <optgroup label="Formal & Profesional">
+                                <option value="font-merriweather">Merriweather</option>
+                                <option value="font-playfair">Playfair Display</option>
+                                <option value="font-lora">Lora</option>
+                                <option value="font-garamond">EB Garamond</option>
+                                <option value="font-cinzel">Cinzel</option>
+                                <option value="font-montserrat">Montserrat</option>
+                                <option value="font-lato">Lato</option>
+                                <option value="font-source-sans">Source Sans 3</option>
+                            </optgroup>
                         </select>
                     </div>
 
@@ -1940,4 +1952,4 @@
         }
     </script>
 </body>
-</html>    
+</html>
