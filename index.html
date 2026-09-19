@@ -1480,66 +1480,61 @@
                         <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-lg ${isUtang ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'} font-bold">${isUtang ? 'Utang Saya' : 'Piutang Saya'}</span></td>
                         <td class="py-3 px-4 text-right font-mono font-bold">${formatRupiah(d.amount)}</td>
                         <td class="py-3 px-4 text-right font-mono text-emerald-600 font-bold">${formatRupiah(paidAmount)}</td>
-                        <td class="py-3 px-4 text-right font-mono text-rose-600 font-bold">${formatRupiah(remaining)}</td>
-                        <td class="py-3 px-4 text-center font-bold font-mono">${percent}%</td>
+                        <td class="py-3 px-4 text-right font-mono font-bold text-rose-600">${formatRupiah(remaining)}</td>
+                        <td class="py-3 px-4 text-center font-bold">${percent}%</td>
                         <td class="py-3 px-4 text-center">
-                            <button onclick="toggleDebtPaid(${d.id})" class="px-2.5 py-1 rounded-full text-[11px] font-bold ${isPaid ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-amber-100 text-amber-700 border border-amber-300'} hover:opacity-80">
-                                ${isPaid ? '✓ Lunas' : '⏳ Belum Lunas'}
-                            </button>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${isPaid ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-amber-100 text-amber-700 border border-amber-300'}">
+                                ${isPaid ? 'LUNAS ✨' : 'BELUM LUNAS'}
+                            </span>
                         </td>
-                        <td class="flex items-center gap-1 py-3 px-4 justify-center">
-                            <!-- TOMBOL FITUR EDIT UTANG PIUTANG -->
-                            <button onclick='openEditDebtModal(${JSON.stringify(d)})' class="p-1 text-blue-500 hover:text-blue-700 transition-colors" title="Edit Catatan">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                            </button>
-                            <button onclick='openInstallmentModal(${JSON.stringify(d)})' class="px-2 py-1 bg-amber-400 hover:bg-amber-500 text-white rounded-lg text-xs font-bold transition-all btn-bounce shadow-xs" title="Cicil / Bayar">
-                                💸 Cicil
-                            </button>
-                            <button onclick="deleteItem('debts', ${d.id})" class="p-1 text-rose-400 hover:text-rose-600 transition-colors" title="Hapus">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
+                        <td class="py-3 px-4 text-center">
+                            <div class="flex justify-center gap-1.5">
+                                <button onclick="openInstallmentModal(${d.id})" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[11px] font-bold px-2 py-1 rounded-lg border border-amber-200 transition-all btn-bounce" title="Cicil / Pelunasan">
+                                    <i class="fa-solid fa-coins mr-0.5"></i> Cicil
+                                </button>
+                                <button onclick='openEditDebtModal(${JSON.stringify(d)})' class="bg-purple-100 hover:bg-purple-200 text-purple-700 text-[11px] font-bold px-2 py-1 rounded-lg border border-purple-200 transition-all btn-bounce" title="Edit Catatan">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button onclick="deleteItem('debts', ${d.id})" class="text-rose-400 hover:text-rose-600 p-1" title="Hapus Catatan">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     `;
                     tbody.appendChild(row);
                 }
             });
 
-            const remainingDebtTotal = Math.max(0, totalDebtGoal - totalDebtPaid);
-            const debtPercentage = totalDebtGoal > 0 ? Math.min(100, Math.round((totalDebtPaid / totalDebtGoal) * 100)) : 0;
-            document.getElementById('debt-summary-amount').textContent = `Sisa: ${formatRupiah(remainingDebtTotal)} / ${formatRupiah(totalDebtGoal)}`;
-            document.getElementById('debt-summary-percentage').textContent = `${debtPercentage}%`;
-            document.getElementById('debt-progress-bar').style.width = `${debtPercentage}%`;
+            // Update Ringkasan Utang
+            const sisaUtang = Math.max(0, totalDebtGoal - totalDebtPaid);
+            const percUtang = totalDebtGoal > 0 ? Math.min(100, Math.round((totalDebtPaid / totalDebtGoal) * 100)) : 0;
+            document.getElementById('debt-summary-amount').textContent = `Sisa: ${formatRupiah(sisaUtang)} / ${formatRupiah(totalDebtGoal)}`;
+            document.getElementById('debt-summary-percentage').textContent = `${percUtang}%`;
+            document.getElementById('debt-progress-bar').style.width = `${percUtang}%`;
 
-            const remainingCreditTotal = Math.max(0, totalCreditGoal - totalCreditPaid);
-            const creditPercentage = totalCreditGoal > 0 ? Math.min(100, Math.round((totalCreditPaid / totalCreditGoal) * 100)) : 0;
-            document.getElementById('credit-summary-amount').textContent = `Sisa: ${formatRupiah(remainingCreditTotal)} / ${formatRupiah(totalCreditGoal)}`;
-            document.getElementById('credit-summary-percentage').textContent = `${creditPercentage}%`;
-            document.getElementById('credit-progress-bar').style.width = `${creditPercentage}%`;
+            // Update Ringkasan Piutang
+            const sisaPiutang = Math.max(0, totalCreditGoal - totalCreditPaid);
+            const percPiutang = totalCreditGoal > 0 ? Math.min(100, Math.round((totalCreditPaid / totalCreditGoal) * 100)) : 0;
+            document.getElementById('credit-summary-amount').textContent = `Sisa: ${formatRupiah(sisaPiutang)} / ${formatRupiah(totalCreditGoal)}`;
+            document.getElementById('credit-summary-percentage').textContent = `${percPiutang}%`;
+            document.getElementById('credit-progress-bar').style.width = `${percPiutang}%`;
         }
 
-        function toggleDebtPaid(id) {
-            const index = debts.findIndex(d => d.id === id);
-            if (index !== -1) {
-                debts[index].paid = !debts[index].paid;
-                saveData();
-            }
-        }
+        function openInstallmentModal(debtId) {
+            const d = debts.find(x => x.id === debtId);
+            if (!d) return;
 
-        function openInstallmentModal(d) {
+            const paid = getDebtPaidAmount(d);
+            const remaining = Math.max(0, d.amount - paid);
+
             document.getElementById('inst-debt-id').value = d.id;
             document.getElementById('inst-title-type').textContent = d.type === 'utang' ? 'Utang Saya' : 'Piutang Saya';
-            document.getElementById('inst-person-name').textContent = `Pihak: ${d.person}`;
-            
-            const paidAmount = getDebtPaidAmount(d);
-            const remaining = Math.max(0, d.amount - paidAmount);
-
+            document.getElementById('inst-person-name').textContent = `Pihak / Orang: ${d.person}`;
             document.getElementById('inst-total-amount').textContent = formatRupiah(d.amount);
-            document.getElementById('inst-paid-amount').textContent = formatRupiah(paidAmount);
+            document.getElementById('inst-paid-amount').textContent = formatRupiah(paid);
             document.getElementById('inst-remaining-amount').textContent = formatRupiah(remaining);
+            document.getElementById('inst-amount').value = '';
+            document.getElementById('inst-note').value = '';
 
             renderInstallmentHistory(d);
             toggleInstallmentModal(true);
@@ -1549,155 +1544,156 @@
             document.getElementById('installment-modal').classList.toggle('hidden', !show);
         }
 
+        function handleSaveInstallment(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('inst-debt-id').value);
+            const d = debts.find(x => x.id === id);
+            if (!d) return;
+
+            if (!d.installments) d.installments = [];
+
+            const amount = parseFloat(document.getElementById('inst-amount').value);
+            const inst = {
+                id: Date.now(),
+                date: document.getElementById('inst-date').value,
+                amount: amount,
+                note: document.getElementById('inst-note').value || 'Cicilan'
+            };
+
+            d.installments.push(inst);
+
+            const newPaid = getDebtPaidAmount(d);
+            if (newPaid >= d.amount) {
+                d.paid = true;
+            }
+
+            saveData();
+            openInstallmentModal(id);
+        }
+
         function renderInstallmentHistory(d) {
             const container = document.getElementById('inst-history-list');
             container.innerHTML = '';
 
             if (!d.installments || d.installments.length === 0) {
-                container.innerHTML = `<p class="text-xs text-purple-400 italic">Belum ada pembayaran cicilan.</p>`;
+                container.innerHTML = `<p class="text-purple-400 italic text-[11px]">Belum ada riwayat cicilan.</p>`;
                 return;
             }
 
-            d.installments.forEach((inst, idx) => {
+            d.installments.forEach((inst, index) => {
                 const item = document.createElement('div');
-                item.className = "flex justify-between items-center bg-purple-50 p-2 rounded-xl border border-purple-100";
+                item.className = 'flex justify-between items-center bg-amber-50/60 border border-amber-200 p-2 rounded-xl text-xs';
                 item.innerHTML = `
                     <div>
-                        <div class="font-bold text-purple-900">${formatRupiah(inst.amount)}</div>
-                        <div class="text-[10px] text-purple-400">${formatDateDisplay(inst.date)} ${inst.note ? `- ${inst.note}` : ''}</div>
+                        <span class="font-bold text-amber-900">#${index+1} ${formatDateDisplay(inst.date)}</span>
+                        <p class="text-[10px] text-amber-700 font-medium">${inst.note}</p>
                     </div>
-                    <button onclick="deleteInstallment(${d.id}, ${idx})" class="text-rose-400 hover:text-rose-600 text-xs font-bold p-1">Hapus</button>
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono font-bold text-emerald-600">+ ${formatRupiah(inst.amount)}</span>
+                        <button onclick="deleteInstallment(${d.id}, ${inst.id})" class="text-rose-400 hover:text-rose-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        function handleSaveInstallment(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('inst-debt-id').value);
-            const amount = parseFloat(document.getElementById('inst-amount').value);
-            const date = document.getElementById('inst-date').value;
-            const note = document.getElementById('inst-note').value;
+        function deleteInstallment(debtId, instId) {
+            const d = debts.find(x => x.id === debtId);
+            if (!d || !d.installments) return;
 
-            const index = debts.findIndex(d => d.id === id);
-            if (index !== -1) {
-                if (!debts[index].installments) debts[index].installments = [];
-                
-                debts[index].installments.push({
-                    date: date,
-                    amount: amount,
-                    note: note
-                });
-
-                const currentPaid = getDebtPaidAmount(debts[index]);
-                if (currentPaid >= debts[index].amount) {
-                    debts[index].paid = true;
-                }
-
-                saveData();
-                openInstallmentModal(debts[index]);
-                document.getElementById('inst-amount').value = '';
-                document.getElementById('inst-note').value = '';
+            d.installments = d.installments.filter(x => x.id !== instId);
+            
+            const newPaid = getDebtPaidAmount(d);
+            if (newPaid < d.amount) {
+                d.paid = false;
             }
-        }
 
-        function deleteInstallment(debtId, instIndex) {
-            const index = debts.findIndex(d => d.id === debtId);
-            if (index !== -1) {
-                debts[index].installments.splice(instIndex, 1);
-                const currentPaid = getDebtPaidAmount(debts[index]);
-                if (currentPaid < debts[index].amount) {
-                    debts[index].paid = false;
-                }
-                saveData();
-                openInstallmentModal(debts[index]);
-            }
+            saveData();
+            openInstallmentModal(debtId);
         }
 
         // ================= TARGET TABUNGAN LOGIC =================
-        function getTargetTotalCurrent(tgt) {
-            if (tgt.deposits && Array.isArray(tgt.deposits)) {
-                return tgt.deposits.reduce((sum, dep) => sum + dep.amount, 0);
-            }
-            return tgt.current || 0;
-        }
-
         function renderTargets() {
             const container = document.getElementById('target-cards-container');
-            const dashContainer = document.getElementById('dash-target-list');
+            const dashList = document.getElementById('dash-target-list');
             container.innerHTML = '';
-            dashContainer.innerHTML = '';
+            dashList.innerHTML = '';
 
-            targets.forEach(tgt => {
-                const currentVal = getTargetTotalCurrent(tgt);
-                const percent = Math.min(100, Math.round((currentVal / tgt.goal) * 100));
+            targets.forEach(t => {
+                const currentDeposit = (t.deposits || []).reduce((sum, dep) => sum + dep.amount, 0);
+                const percent = Math.min(100, Math.round((currentDeposit / t.goal) * 100));
 
+                // Render Card Utama Tab Target
                 const card = document.createElement('div');
-                card.className = "bg-white border-2 border-purple-100 rounded-3xl p-5 pastel-shadow flex flex-col sm:flex-row gap-4 justify-between items-center";
+                card.className = "bg-white border-2 border-purple-100 rounded-3xl p-5 pastel-shadow flex flex-col sm:flex-row gap-4 items-center justify-between";
                 card.innerHTML = `
                     <div class="flex items-center gap-4 w-full sm:w-auto">
-                        <div class="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-3xl shadow-inner">${tgt.icon}</div>
+                        <div class="w-14 h-14 bg-pink-100 border-2 border-pink-200 rounded-2xl flex items-center justify-center text-3xl shadow-sm">
+                            ${t.icon}
+                        </div>
                         <div>
-                            <h3 class="font-bold text-purple-900 text-base">${tgt.title}</h3>
-                            <div class="text-xs text-purple-500 font-semibold mt-0.5">
-                                Terkumpul: <b class="text-emerald-600">${formatRupiah(currentVal)}</b> / <b>${formatRupiah(tgt.goal)}</b>
-                            </div>
+                            <h3 class="font-bold text-purple-900 text-base">${t.title}</h3>
+                            <p class="text-xs text-purple-400 font-semibold mt-0.5">Terkumpul: <b class="text-emerald-600 font-mono">${formatRupiah(currentDeposit)}</b> / <span class="font-mono">${formatRupiah(t.goal)}</span></p>
                         </div>
                     </div>
 
-                    <div class="w-full sm:w-1/2 flex flex-col gap-2">
-                        <div class="flex justify-between items-center text-xs font-bold text-purple-700">
-                            <span>Progress</span>
-                            <span>${percent}%</span>
+                    <div class="w-full sm:w-1/3 space-y-1.5">
+                        <div class="flex justify-between text-xs font-bold">
+                            <span class="text-purple-400">Progress</span>
+                            <span class="text-pink-500">${percent}%</span>
                         </div>
-                        <div class="w-full bg-purple-100 rounded-full h-3 overflow-hidden">
-                            <div class="bg-pink-400 h-3 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        <div class="w-full bg-purple-100 rounded-full h-3.5 p-0.5 border border-purple-200">
+                            <div class="bg-gradient-to-r from-pink-400 to-purple-400 h-2.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
                         </div>
-                        <div class="flex justify-end gap-2 mt-1">
-                            <button onclick='openTargetDepositModal(${JSON.stringify(tgt)})' class="px-2.5 py-1 bg-pink-400 hover:bg-pink-500 text-white rounded-xl text-xs font-bold transition-all btn-bounce shadow-xs">
-                                🌸 Setor Target
-                            </button>
-                            <button onclick="openTargetModal(${tgt.id})" class="text-xs text-purple-500 hover:text-purple-700 font-bold ml-1"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                            <button onclick="deleteTarget(${tgt.id})" class="text-xs text-rose-400 hover:text-rose-600 font-bold ml-1"><i class="fa-solid fa-trash"></i> Hapus</button>
-                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                        <button onclick="openTargetDepositModal(${t.id})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 text-xs font-bold py-2 px-3 rounded-xl border border-emerald-200 transition-all btn-bounce flex items-center gap-1">
+                            <i class="fa-solid fa-piggy-bank"></i> Setor Cicilan
+                        </button>
+                        <button onclick="openTargetModal(${t.id})" class="bg-purple-100 hover:bg-purple-200 text-purple-700 text-xs font-bold py-2 px-3 rounded-xl border border-purple-200 transition-all btn-bounce">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteTarget(${t.id})" class="bg-rose-100 hover:bg-rose-200 text-rose-600 text-xs font-bold py-2 px-3 rounded-xl border border-rose-200 transition-all btn-bounce">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
 
-                // Dashboard summary
+                // Render List Mini di Dashboard
                 const dashItem = document.createElement('div');
-                dashItem.className = "space-y-1";
+                dashItem.className = 'space-y-1';
                 dashItem.innerHTML = `
-                    <div class="flex justify-between text-xs font-bold">
-                        <span class="text-purple-900">${tgt.icon} ${tgt.title}</span>
-                        <span class="text-purple-600">${percent}%</span>
+                    <div class="flex justify-between text-xs">
+                        <span class="font-bold text-purple-900">${t.icon} ${t.title}</span>
+                        <span class="font-bold text-pink-500">${percent}%</span>
                     </div>
-                    <div class="w-full bg-purple-100 rounded-full h-2 overflow-hidden">
+                    <div class="w-full bg-purple-100 rounded-full h-2">
                         <div class="bg-pink-400 h-2 rounded-full" style="width: ${percent}%"></div>
                     </div>
                 `;
-                dashContainer.appendChild(dashItem);
+                dashList.appendChild(dashItem);
             });
         }
 
-        function openTargetModal(targetId = null) {
-            const form = document.getElementById('target-form');
-            form.reset();
-
-            if (targetId) {
-                const tgt = targets.find(t => t.id === targetId);
-                if (tgt) {
-                    document.getElementById('target-id').value = tgt.id;
-                    document.getElementById('target-title').value = tgt.title;
-                    document.getElementById('target-icon').value = tgt.icon;
-                    document.getElementById('target-goal').value = tgt.goal;
+        function openTargetModal(id = null) {
+            if (id) {
+                const t = targets.find(x => x.id === id);
+                if (t) {
+                    document.getElementById('target-id').value = t.id;
+                    document.getElementById('target-title').value = t.title;
+                    document.getElementById('target-icon').value = t.icon;
+                    document.getElementById('target-goal').value = t.goal;
                     document.getElementById('target-modal-title').textContent = "Edit Target Tabungan 🎯";
                 }
             } else {
                 document.getElementById('target-id').value = '';
+                document.getElementById('target-title').value = '';
+                document.getElementById('target-icon').value = '';
+                document.getElementById('target-goal').value = '';
                 document.getElementById('target-modal-title').textContent = "Tambah Target Tabungan Baru 🎯";
             }
-
             toggleTargetModal(true);
         }
 
@@ -1707,20 +1703,26 @@
 
         function handleSaveTarget(e) {
             e.preventDefault();
-            const idVal = document.getElementById('target-id').value;
-            const newTarget = {
-                id: idVal ? parseInt(idVal) : Date.now(),
-                title: document.getElementById('target-title').value,
-                icon: document.getElementById('target-icon').value,
-                goal: parseFloat(document.getElementById('target-goal').value),
-                deposits: idVal ? (targets.find(t => t.id === parseInt(idVal))?.deposits || []) : []
-            };
+            const id = document.getElementById('target-id').value;
+            const title = document.getElementById('target-title').value;
+            const icon = document.getElementById('target-icon').value || '🎯';
+            const goal = parseFloat(document.getElementById('target-goal').value);
 
-            if (idVal) {
-                const idx = targets.findIndex(t => t.id === parseInt(idVal));
-                if (idx !== -1) targets[idx] = newTarget;
+            if (id) {
+                const t = targets.find(x => x.id === parseInt(id));
+                if (t) {
+                    t.title = title;
+                    t.icon = icon;
+                    t.goal = goal;
+                }
             } else {
-                targets.push(newTarget);
+                targets.push({
+                    id: Date.now(),
+                    title: title,
+                    icon: icon,
+                    goal: goal,
+                    deposits: []
+                });
             }
 
             saveData();
@@ -1728,24 +1730,28 @@
         }
 
         function deleteTarget(id) {
-            if (confirm("Hapus target tabungan ini?")) {
+            if (confirm("Apakah Anda yakin ingin menghapus target tabungan ini?")) {
                 targets = targets.filter(t => t.id !== id);
                 saveData();
             }
         }
 
-        function openTargetDepositModal(tgt) {
-            document.getElementById('target-deposit-id').value = tgt.id;
-            document.getElementById('target-deposit-name').textContent = `Target: ${tgt.icon} ${tgt.title}`;
-            
-            const currentVal = getTargetTotalCurrent(tgt);
-            const remaining = Math.max(0, tgt.goal - currentVal);
+        function openTargetDepositModal(targetId) {
+            const t = targets.find(x => x.id === targetId);
+            if (!t) return;
 
-            document.getElementById('target-deposit-goal').textContent = formatRupiah(tgt.goal);
-            document.getElementById('target-deposit-current').textContent = formatRupiah(currentVal);
+            const current = (t.deposits || []).reduce((sum, dep) => sum + dep.amount, 0);
+            const remaining = Math.max(0, t.goal - current);
+
+            document.getElementById('target-deposit-id').value = t.id;
+            document.getElementById('target-deposit-name').textContent = `Target: ${t.icon} ${t.title}`;
+            document.getElementById('target-deposit-goal').textContent = formatRupiah(t.goal);
+            document.getElementById('target-deposit-current').textContent = formatRupiah(current);
             document.getElementById('target-deposit-remaining').textContent = formatRupiah(remaining);
+            document.getElementById('target-deposit-amount').value = '';
+            document.getElementById('target-deposit-note').value = '';
 
-            renderTargetDepositHistory(tgt);
+            renderTargetDepositHistory(t);
             toggleTargetDepositModal(true);
         }
 
@@ -1753,106 +1759,116 @@
             document.getElementById('target-deposit-modal').classList.toggle('hidden', !show);
         }
 
-        function renderTargetDepositHistory(tgt) {
+        function handleSaveTargetDeposit(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('target-deposit-id').value);
+            const t = targets.find(x => x.id === id);
+            if (!t) return;
+
+            if (!t.deposits) t.deposits = [];
+
+            const amount = parseFloat(document.getElementById('target-deposit-amount').value);
+            const dep = {
+                id: Date.now(),
+                date: document.getElementById('target-deposit-date').value,
+                amount: amount,
+                note: document.getElementById('target-deposit-note').value || 'Setoran Tabungan'
+            };
+
+            t.deposits.push(dep);
+            saveData();
+            openTargetDepositModal(id);
+        }
+
+        function renderTargetDepositHistory(t) {
             const container = document.getElementById('target-deposit-history-list');
             container.innerHTML = '';
 
-            if (!tgt.deposits || tgt.deposits.length === 0) {
-                container.innerHTML = `<p class="text-xs text-purple-400 italic">Belum ada riwayat setoran tabungan.</p>`;
+            if (!t.deposits || t.deposits.length === 0) {
+                container.innerHTML = `<p class="text-purple-400 italic text-[11px]">Belum ada riwayat setoran.</p>`;
                 return;
             }
 
-            tgt.deposits.forEach((dep, idx) => {
+            t.deposits.forEach((dep, index) => {
                 const item = document.createElement('div');
-                item.className = "flex justify-between items-center bg-pink-50 p-2.5 rounded-xl border border-pink-100";
+                item.className = 'flex justify-between items-center bg-pink-50/60 border border-pink-200 p-2 rounded-xl text-xs';
                 item.innerHTML = `
                     <div>
-                        <div class="font-bold text-pink-700">${formatRupiah(dep.amount)}</div>
-                        <div class="text-[10px] text-purple-500 font-medium">📅 ${formatDateDisplay(dep.date)} | 📝 ${dep.note || '-'}</div>
+                        <span class="font-bold text-pink-900">#${index+1} ${formatDateDisplay(dep.date)}</span>
+                        <p class="text-[10px] text-pink-700 font-medium">${dep.note}</p>
                     </div>
-                    <button onclick="deleteTargetDeposit(${tgt.id}, ${idx})" class="text-rose-400 hover:text-rose-600 text-xs font-bold p-1">Hapus</button>
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono font-bold text-emerald-600">+ ${formatRupiah(dep.amount)}</span>
+                        <button onclick="deleteTargetDeposit(${t.id}, ${dep.id})" class="text-rose-400 hover:text-rose-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        function handleSaveTargetDeposit(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('target-deposit-id').value);
-            const amount = parseFloat(document.getElementById('target-deposit-amount').value);
-            const date = document.getElementById('target-deposit-date').value;
-            const note = document.getElementById('target-deposit-note').value;
+        function deleteTargetDeposit(targetId, depId) {
+            const t = targets.find(x => x.id === targetId);
+            if (!t || !t.deposits) return;
 
-            const index = targets.findIndex(t => t.id === id);
-            if (index !== -1) {
-                if (!targets[index].deposits) targets[index].deposits = [];
-                
-                targets[index].deposits.push({
-                    date: date,
-                    amount: amount,
-                    note: note
-                });
-
-                saveData();
-                openTargetDepositModal(targets[index]);
-                document.getElementById('target-deposit-amount').value = '';
-                document.getElementById('target-deposit-note').value = '';
-            }
+            t.deposits = t.deposits.filter(x => x.id !== depId);
+            saveData();
+            openTargetDepositModal(targetId);
         }
 
-        function deleteTargetDeposit(targetId, depIndex) {
-            const index = targets.findIndex(t => t.id === targetId);
-            if (index !== -1) {
-                targets[index].deposits.splice(depIndex, 1);
-                saveData();
-                openTargetDepositModal(targets[index]);
-            }
-        }
-
-        // ================= DASHBOARD & CHART STATS =================
+        // ================= DASHBOARD & CHARTS LOGIC =================
         function updateDashboardStats() {
-            let totalInc = transactions.filter(t => t.type === 'pemasukan').reduce((s, t) => s + t.amount, 0);
-            let totalExp = transactions.filter(t => t.type === 'pengeluaran').reduce((s, t) => s + t.amount, 0);
+            const today = new Date().toISOString().split('T')[0];
+            let incomeToday = 0, expenseToday = 0;
 
-            document.getElementById('dash-total-income').textContent = formatRupiah(totalInc);
-            document.getElementById('dash-total-expense').textContent = formatRupiah(totalExp);
-
-            let totalBankBalance = 0;
-            bankAccounts.forEach(b => {
-                const bMutations = bankMutations.filter(m => m.bank === b);
-                const bBalance = bMutations.reduce((sum, m) => sum + (m.type === 'debit' ? m.amount : -m.amount), 0);
-                totalBankBalance += bBalance;
-            });
-
-            document.getElementById('dash-total-bank').textContent = formatRupiah(totalBankBalance);
-
-            let totalDebt = 0;
-            let totalCredit = 0;
-
-            debts.forEach(d => {
-                const paidAmount = getDebtPaidAmount(d);
-                const remaining = Math.max(0, d.amount - paidAmount);
-                
-                if (d.type === 'utang') {
-                    totalDebt += remaining;
-                } else {
-                    totalCredit += remaining;
+            transactions.forEach(t => {
+                if (t.date === today) {
+                    if (t.type === 'pemasukan') incomeToday += t.amount;
+                    else if (t.type === 'pengeluaran') expenseToday += t.amount;
                 }
             });
 
-            document.getElementById('dash-debt-val').textContent = formatRupiah(totalDebt);
-            document.getElementById('dash-credit-val').textContent = formatRupiah(totalCredit);
+            document.getElementById('dash-total-income').textContent = formatRupiah(incomeToday);
+            document.getElementById('dash-total-expense').textContent = formatRupiah(expenseToday);
+
+            // Total Saldo Bank
+            let totalBankBalance = 0;
+            const bankBalances = {};
+
+            bankAccounts.forEach(b => {
+                bankBalances[b] = 0;
+            });
+
+            bankMutations.forEach(m => {
+                if (!bankBalances[m.bank]) bankBalances[m.bank] = 0;
+                if (m.type === 'debit') bankBalances[m.bank] += m.amount;
+                else if (m.type === 'kredit') bankBalances[m.bank] -= m.amount;
+            });
+
+            Object.values(bankBalances).forEach(val => totalBankBalance += val);
+            document.getElementById('dash-total-bank').textContent = formatRupiah(totalBankBalance);
+
+            // Ringkasan Utang / Piutang untuk Dashboard
+            let sumDebt = 0, sumCredit = 0;
+            debts.forEach(d => {
+                const paid = getDebtPaidAmount(d);
+                const remaining = Math.max(0, d.amount - paid);
+                if (d.type === 'utang') sumDebt += remaining;
+                else sumCredit += remaining;
+            });
+
+            document.getElementById('dash-debt-val').textContent = formatRupiah(sumDebt);
+            document.getElementById('dash-credit-val').textContent = formatRupiah(sumCredit);
         }
 
         function initCharts() {
-            const ctxExpense = document.getElementById('expenseChart').getContext('2d');
-            myChart = new Chart(ctxExpense, {
+            const ctx1 = document.getElementById('expenseChart').getContext('2d');
+            myChart = new Chart(ctx1, {
                 type: 'doughnut',
                 data: {
                     labels: [],
                     datasets: [{
                         data: [],
-                        backgroundColor: ['#F472B6', '#A78BFA', '#38BDF8', '#FBBF24', '#34D399', '#F87171', '#C084FC']
+                        backgroundColor: ['#F472B6', '#A78BFA', '#34D399', '#FBBF24', '#38BDF8', '#F87171', '#C084FC']
                     }]
                 },
                 options: {
@@ -1862,9 +1878,9 @@
                 }
             });
 
-            const ctxBank = document.getElementById('bankChart').getContext('2d');
-            myBankChart = new Chart(ctxBank, {
-                type: 'doughnut',
+            const ctx2 = document.getElementById('bankChart').getContext('2d');
+            myBankChart = new Chart(ctx2, {
+                type: 'pie',
                 data: {
                     labels: [],
                     datasets: [{
@@ -1883,420 +1899,55 @@
         function updateCharts() {
             if (!myChart || !myBankChart) return;
 
-            const categoryTotals = {};
+            // Chart Kategori Pengeluaran
+            const expCategories = {};
             transactions.filter(t => t.type === 'pengeluaran').forEach(t => {
-                categoryTotals[t.category] = (categoryTotals[t.category] || 0) + t.amount;
+                expCategories[t.category] = (expCategories[t.category] || 0) + t.amount;
             });
 
-            myChart.data.labels = Object.keys(categoryTotals);
-            myChart.data.datasets[0].data = Object.values(categoryTotals);
+            myChart.data.labels = Object.keys(expCategories);
+            myChart.data.datasets[0].data = Object.values(expCategories);
             myChart.update();
 
+            // Chart Distribusi Bank
             const bankBalances = {};
-            let grandTotalBank = 0;
-
-            bankAccounts.forEach(b => {
-                const bMutations = bankMutations.filter(m => m.bank === b);
-                const bal = bMutations.reduce((sum, m) => sum + (m.type === 'debit' ? m.amount : -m.amount), 0);
-                bankBalances[b] = Math.max(0, bal);
-                grandTotalBank += Math.max(0, bal);
+            bankAccounts.forEach(b => bankBalances[b] = 0);
+            bankMutations.forEach(m => {
+                if (bankBalances[m.bank] !== undefined) {
+                    if (m.type === 'debit') bankBalances[m.bank] += m.amount;
+                    else if (m.type === 'kredit') bankBalances[m.bank] -= m.amount;
+                }
             });
 
-            myBankChart.data.labels = Object.keys(bankBalances);
-            myBankChart.data.datasets[0].data = Object.values(bankBalances);
+            const labels = Object.keys(bankBalances);
+            const values = Object.values(bankBalances);
+            const total = values.reduce((a, b) => a + Math.max(0, b), 0);
+
+            myBankChart.data.labels = labels;
+            myBankChart.data.datasets[0].data = values.map(v => Math.max(0, v));
             myBankChart.update();
 
-            const percList = document.getElementById('bank-percentage-list');
-            percList.innerHTML = '';
-            Object.keys(bankBalances).forEach((b, idx) => {
-                const bal = bankBalances[b];
-                const pct = grandTotalBank > 0 ? Math.round((bal / grandTotalBank) * 100) : 0;
-                const color = bankColors[idx % bankColors.length];
+            // Render Persentase Bank
+            const percContainer = document.getElementById('bank-percentage-list');
+            percContainer.innerHTML = '';
+            labels.forEach((b, idx) => {
+                const val = Math.max(0, bankBalances[b]);
+                const perc = total > 0 ? Math.round((val / total) * 100) : 0;
 
                 const item = document.createElement('div');
-                item.className = "flex justify-between items-center text-xs font-bold";
+                item.className = 'flex justify-between items-center text-xs font-bold';
                 item.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${color}"></span>
+                        <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${bankColors[idx % bankColors.length]}"></span>
                         <span class="text-purple-900">${b}</span>
                     </div>
-                    <span class="text-purple-600">${pct}% (${formatRupiah(bal)})</span>
+                    <span class="text-purple-500 font-mono">${perc}% (${formatRupiah(val)})</span>
                 `;
-                percList.appendChild(item);
+                percContainer.appendChild(item);
             });
         }
 
-        // ================= SETTING & THEME LOGIC =================
-        function toggleSettingsModal(show) {
-            document.getElementById('settingsModal').classList.toggle('hidden', !show);
-        }
-
-        function switchSettingTab(tab) {
-            const themeBtn = document.getElementById('tabThemeBtn');
-            const backupBtn = document.getElementById('tabBackupBtn');
-            const themeContent = document.getElementById('tabThemeContent');
-            const backupContent = document.getElementById('tabBackupContent');
-
-            if (tab === 'theme') {
-                themeBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white";
-                backupBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700";
-                themeContent.classList.remove('hidden');
-                backupContent.classList.add('hidden');
-            } else {
-                backupBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white";
-                themeBtn.className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700";
-                backupContent.classList.remove('hidden');
-                themeContent.classList.add('hidden');
-            }
-        }
-
-        /* FITUR BARU: DYNAMIC STYLING DENGAN WARNA NAV TAB KUSTOM */
-        function applyNavbarColors() {
-            const navBtnBgColor = document.getElementById('navBtnBgColor').value;
-            const navBtnTextColor = document.getElementById('navBtnTextColor').value;
-            const navBtnActiveBgColor = document.getElementById('navBtnActiveBgColor').value;
-            const navBtnActiveTextColor = document.getElementById('navBtnActiveTextColor').value;
-
-            const tabs = ['dashboard', 'transactions', 'bank', 'target', 'debt'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`tab-btn-${t}`);
-                if (btn) {
-                    if (t === activeTab) {
-                        btn.style.backgroundColor = navBtnActiveBgColor;
-                        btn.style.color = navBtnActiveTextColor;
-                        btn.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
-                    } else {
-                        btn.style.backgroundColor = navBtnBgColor;
-                        btn.style.color = navBtnTextColor;
-                        btn.style.boxShadow = 'none';
-                    }
-                }
-            });
-        }
-
-        function initThemeEvents() {
-            const headerBgColorInput = document.getElementById('headerBgColor');
-            const headerTextColorInput = document.getElementById('headerTextColor');
-            const headerBgUpload = document.getElementById('headerBgUpload');
-            const headerIconUpload = document.getElementById('headerIconUpload');
-            const mainHeader = document.getElementById('mainHeader');
-
-            // Event listener Navbar Color
-            document.getElementById('navBtnBgColor').addEventListener('input', applyNavbarColors);
-            document.getElementById('navBtnTextColor').addEventListener('input', applyNavbarColors);
-            document.getElementById('navBtnActiveBgColor').addEventListener('input', applyNavbarColors);
-            document.getElementById('navBtnActiveTextColor').addEventListener('input', applyNavbarColors);
-
-            // Pengaturan Body Background
-            const bodyBgColorInput = document.getElementById('bodyBgColor');
-            const bodyOpacityInput = document.getElementById('bodyOpacity');
-            const bodyBgUpload = document.getElementById('bodyBgUpload');
-            const bodyOverlay = document.getElementById('bodyOverlay');
-            const appBody = document.getElementById('appBody');
-
-            bodyBgColorInput.addEventListener('input', (e) => {
-                appBody.style.backgroundColor = e.target.value;
-                bodyOverlay.style.backgroundColor = e.target.value;
-            });
-
-            bodyOpacityInput.addEventListener('input', (e) => {
-                const opacityVal = e.target.value;
-                bodyOverlay.style.opacity = opacityVal;
-                document.getElementById('opacityValLabel').textContent = `${Math.round(opacityVal * 100)}%`;
-            });
-
-            bodyBgUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (evt) => {
-                        currentBodyBgImg = evt.target.result;
-                        appBody.style.backgroundImage = `url('${currentBodyBgImg}')`;
-                        document.getElementById('resetBodyBgImgBtn').classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            headerBgColorInput.addEventListener('input', (e) => {
-                if (!currentCustomBg) mainHeader.style.backgroundColor = e.target.value;
-            });
-
-            headerTextColorInput.addEventListener('input', (e) => {
-                mainHeader.style.color = e.target.value;
-            });
-
-            headerBgUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (evt) => {
-                        currentCustomBg = evt.target.result;
-                        mainHeader.style.backgroundImage = `url('${currentCustomBg}')`;
-                        document.getElementById('resetBgImgBtn').classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            headerIconUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (evt) => {
-                        currentCustomIcon = evt.target.result;
-                        document.getElementById('headerCustomImg').src = currentCustomIcon;
-                        document.getElementById('headerCustomImg').classList.remove('hidden');
-                        document.getElementById('headerEmoji').classList.add('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-
-        function resetBodyBgImage() {
-            currentBodyBgImg = null;
-            document.getElementById('bodyBgUpload').value = '';
-            const appBody = document.getElementById('appBody');
-            appBody.style.backgroundImage = 'none';
-            appBody.style.backgroundColor = document.getElementById('bodyBgColor').value;
-            document.getElementById('resetBodyBgImgBtn').classList.add('hidden');
-        }
-
-        function resetHeaderBgImage() {
-            currentCustomBg = null;
-            document.getElementById('headerBgUpload').value = '';
-            const mainHeader = document.getElementById('mainHeader');
-            mainHeader.style.backgroundImage = 'none';
-            mainHeader.style.backgroundColor = document.getElementById('headerBgColor').value;
-            document.getElementById('resetBgImgBtn').classList.add('hidden');
-        }
-
-        function previewFontChange(fontClass) {
-            const body = document.getElementById('appBody');
-            body.className = body.className.replace(/font-\w+/g, '');
-            body.classList.add(fontClass);
-        }
-
-        function selectEmoji(emoji) {
-            document.getElementById('headerEmoji').textContent = emoji;
-            document.getElementById('headerEmoji').classList.remove('hidden');
-            document.getElementById('headerCustomImg').classList.add('hidden');
-            currentCustomIcon = null;
-            document.getElementById('headerIconUpload').value = '';
-        }
-
-        function saveThemeSettings() {
-            const mainTitle = document.getElementById('headerMainTitleInput').value.trim() || "Halo Cantik✨";
-            const subTitle = document.getElementById('headerSubTitleInput').value.trim() || "Keuangan Personal Go To Richy Woman ✨";
-
-            document.getElementById('headerMainTitle').textContent = mainTitle;
-            document.getElementById('headerSubTitle').textContent = subTitle;
-
-            const settings = {
-                mainTitle: mainTitle,
-                subTitle: subTitle,
-                bgColor: document.getElementById('headerBgColor').value,
-                textColor: document.getElementById('headerTextColor').value,
-                customBg: currentCustomBg,
-                font: document.getElementById('fontSelect').value,
-                emojiIcon: document.getElementById('headerEmoji').textContent,
-                customIcon: currentCustomIcon,
-                bodyBgColor: document.getElementById('bodyBgColor').value,
-                bodyOpacity: document.getElementById('bodyOpacity').value,
-                bodyBgImg: currentBodyBgImg,
-                email: document.getElementById('backupEmail').value,
-                autoBackup: document.getElementById('autoBackupToggle').checked,
-                navBgColor: document.getElementById('navBtnBgColor').value,
-                navTextColor: document.getElementById('navBtnTextColor').value,
-                navActiveBgColor: document.getElementById('navBtnActiveBgColor').value,
-                navActiveTextColor: document.getElementById('navBtnActiveTextColor').value
-            };
-
-            localStorage.setItem('bela_theme_settings', JSON.stringify(settings));
-            applyNavbarColors();
-            alert("Pengaturan tema, body, & header berhasil disimpan!");
-            toggleSettingsModal(false);
-        }
-
-        function loadSettings() {
-            const saved = localStorage.getItem('bela_theme_settings');
-            if (!saved) {
-                applyNavbarColors();
-                return;
-            }
-
-            const settings = JSON.parse(saved);
-            const mainHeader = document.getElementById('mainHeader');
-            const appBody = document.getElementById('appBody');
-            const bodyOverlay = document.getElementById('bodyOverlay');
-
-            const mainTitle = settings.mainTitle || "Halo Cantik✨";
-            const subTitle = settings.subTitle || "Keuangan Personal Go To Richy Woman ✨";
-            
-            document.getElementById('headerMainTitle').textContent = mainTitle;
-            document.getElementById('headerSubTitle').textContent = subTitle;
-            document.getElementById('headerMainTitleInput').value = mainTitle;
-            document.getElementById('headerSubTitleInput').value = subTitle;
-
-            document.getElementById('headerBgColor').value = settings.bgColor || "#ffb6c1";
-            document.getElementById('headerTextColor').value = settings.textColor || "#333333";
-            document.getElementById('fontSelect').value = settings.font || "font-quicksand";
-
-            // Load Navbar Button Colors
-            if (settings.navBgColor) document.getElementById('navBtnBgColor').value = settings.navBgColor;
-            if (settings.navTextColor) document.getElementById('navBtnTextColor').value = settings.navTextColor;
-            if (settings.navActiveBgColor) document.getElementById('navBtnActiveBgColor').value = settings.navActiveBgColor;
-            if (settings.navActiveTextColor) document.getElementById('navBtnActiveTextColor').value = settings.navActiveTextColor;
-            
-            // Load Body Background Settings
-            const bodyBgCol = settings.bodyBgColor || "#fcebed";
-            const bodyOp = settings.bodyOpacity || "0";
-            document.getElementById('bodyBgColor').value = bodyBgCol;
-            document.getElementById('bodyOpacity').value = bodyOp;
-            document.getElementById('opacityValLabel').textContent = `${Math.round(parseFloat(bodyOp) * 100)}%`;
-
-            appBody.style.backgroundColor = bodyBgCol;
-            bodyOverlay.style.backgroundColor = bodyBgCol;
-            bodyOverlay.style.opacity = bodyOp;
-
-            if (settings.bodyBgImg) {
-                currentBodyBgImg = settings.bodyBgImg;
-                appBody.style.backgroundImage = `url('${currentBodyBgImg}')`;
-                document.getElementById('resetBodyBgImgBtn').classList.remove('hidden');
-            }
-
-            document.getElementById('backupEmail').value = settings.email || "";
-            document.getElementById('autoBackupToggle').checked = !!settings.autoBackup;
-
-            mainHeader.style.color = settings.textColor;
-
-            if (settings.customBg) {
-                currentCustomBg = settings.customBg;
-                mainHeader.style.backgroundImage = `url('${currentCustomBg}')`;
-                document.getElementById('resetBgImgBtn').classList.remove('hidden');
-            } else {
-                mainHeader.style.backgroundColor = settings.bgColor;
-            }
-
-            previewFontChange(settings.font);
-
-            if (settings.customIcon) {
-                currentCustomIcon = settings.customIcon;
-                document.getElementById('headerCustomImg').src = currentCustomIcon;
-                document.getElementById('headerCustomImg').classList.remove('hidden');
-                document.getElementById('headerEmoji').classList.add('hidden');
-            } else if (settings.emojiIcon) {
-                document.getElementById('headerEmoji').textContent = settings.emojiIcon;
-            }
-
-            applyNavbarColors();
-        }
-
-        // ================= EKSPOR EXCEL LENGKAP =================
-        function exportExcel() {
-            const wb = XLSX.utils.book_new();
-
-            // 1. Sheet Catatan Harian
-            const wsTransactionsData = transactions.map(t => ({
-                "Tanggal": formatDateDisplay(t.date),
-                "Jenis": t.type,
-                "Kategori": t.category,
-                "Jumlah (Rp)": t.amount,
-                "Keterangan": t.description
-            }));
-            const wsTransactions = XLSX.utils.json_to_sheet(wsTransactionsData.length ? wsTransactionsData : [{"Pesan": "Tidak ada data"}]);
-            XLSX.utils.book_append_sheet(wb, wsTransactions, "Catatan Harian");
-
-            // 2. Sheet Mutasi Bank
-            bankAccounts.forEach(b => {
-                const filteredMutations = bankMutations
-                    .filter(m => m.bank === b)
-                    .sort((x, y) => new Date(x.date) - new Date(y.date));
-
-                let runningBalance = 0;
-                const wsBankData = filteredMutations.map(m => {
-                    const debit = m.type === 'debit' ? m.amount : 0;
-                    const kredit = m.type === 'kredit' ? m.amount : 0;
-                    runningBalance += (debit - kredit);
-
-                    return {
-                        "Tanggal": formatDateDisplay(m.date),
-                        "Keterangan": m.description,
-                        "Debit (Rp)": debit,
-                        "Kredit (Rp)": kredit,
-                        "Saldo (Rp)": runningBalance
-                    };
-                });
-
-                let sheetName = `Mutasi - ${b}`.slice(0, 31);
-                const wsBank = XLSX.utils.json_to_sheet(wsBankData.length ? wsBankData : [{"Pesan": "Tidak ada mutasi"}]);
-                XLSX.utils.book_append_sheet(wb, wsBank, sheetName);
-            });
-
-            // 3. Sheet Target Tabungan
-            const wsTargetsData = targets.map(tgt => {
-                const currentVal = getTargetTotalCurrent(tgt);
-                return {
-                    "Impian / Target": tgt.title,
-                    "Ikon": tgt.icon,
-                    "Nominal Terkumpul (Rp)": currentVal,
-                    "Target Nominal (Rp)": tgt.goal,
-                    "Persentase Ketercapaian": `${Math.min(100, Math.round((currentVal / tgt.goal) * 100))}%`
-                };
-            });
-            const wsTargets = XLSX.utils.json_to_sheet(wsTargetsData.length ? wsTargetsData : [{"Pesan": "Tidak ada target tabungan"}]);
-            XLSX.utils.book_append_sheet(wb, wsTargets, "Target Tabungan");
-
-            // 4. Sheet Utang Piutang
-            const wsDebtsData = debts.map(d => {
-                const paidAmount = getDebtPaidAmount(d);
-                const remaining = Math.max(0, d.amount - paidAmount);
-                return {
-                    "Pihak / Orang": d.person,
-                    "Tipe": d.type === 'utang' ? 'Utang Saya' : 'Piutang Saya',
-                    "Total Nominal (Rp)": d.amount,
-                    "Sudah Dicicil (Rp)": paidAmount,
-                    "Sisa (Rp)": remaining,
-                    "Jatuh Tempo": formatDateDisplay(d.dueDate),
-                    "Status": (d.paid || remaining === 0) ? 'Lunas' : 'Belum Lunas',
-                    "Keterangan": d.description || '-'
-                };
-            });
-            const wsDebts = XLSX.utils.json_to_sheet(wsDebtsData.length ? wsDebtsData : [{"Pesan": "Tidak ada data utang piutang"}]);
-            XLSX.utils.book_append_sheet(wb, wsDebts, "Utang Piutang");
-
-            XLSX.writeFile(wb, `Laporan_Keuangan_Rich_Woman_${new Date().toISOString().slice(0,10)}.xlsx`);
-        }
-
-        function exportBankMutationsExcel() {
-            const currentBank = document.getElementById('bank-select').value || bankAccounts[0];
-            const wb = XLSX.utils.book_new();
-
-            const filteredMutations = bankMutations
-                .filter(m => m.bank === currentBank)
-                .sort((x, y) => new Date(x.date) - new Date(y.date));
-
-            let runningBalance = 0;
-            const wsBankData = filteredMutations.map(m => {
-                const debit = m.type === 'debit' ? m.amount : 0;
-                const kredit = m.type === 'kredit' ? m.amount : 0;
-                runningBalance += (debit - kredit);
-
-                return {
-                    "Tanggal": formatDateDisplay(m.date),
-                    "Keterangan": m.description,
-                    "Debit (Rp)": debit,
-                    "Kredit (Rp)": kredit,
-                    "Saldo (Rp)": runningBalance
-                };
-            });
-
-            const wsBank = XLSX.utils.json_to_sheet(wsBankData.length ? wsBankData : [{"Pesan": "Tidak ada mutasi"}]);
-            XLSX.utils.book_append_sheet(wb, wsBank, `Mutasi ${currentBank}`);
-            XLSX.writeFile(wb, `Mutasi_Bank_${currentBank}_${new Date().toISOString().slice(0,10)}.xlsx`);
-        }
-
+        // ================= IMPORT & EXPORT EXCEL LOGIC =================
         function triggerImport() {
             document.getElementById('excel-file-input').click();
         }
@@ -2305,94 +1956,527 @@
             document.getElementById('bank-file-input').click();
         }
 
-        function handleImportExcel(e) {
-            const file = e.target.files[0];
+        /* FIX FITUR IMPOR AUTOMATIS EXCEL LENGKAP */
+        function handleImportExcel(event) {
+            const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = (evt) => {
+            reader.onload = function(e) {
                 try {
-                    const data = new Uint8Array(evt.target.result);
+                    const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const json = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    let importedAny = false;
 
-                    let importedCount = 0;
-                    json.forEach(row => {
-                        if (row["Tanggal"] && row["Jenis"] && row["Jumlah (Rp)"]) {
-                            transactions.push({
-                                id: Date.now() + Math.random(),
-                                date: String(row["Tanggal"]),
-                                type: String(row["Jenis"]).toLowerCase(),
-                                category: row["Kategori"] || 'Lainnya 🌸',
-                                amount: parseFloat(row["Jumlah (Rp)"]),
-                                description: row["Keterangan"] || '-'
+                    // 1. Detections & Reading Catatan Harian Sheet
+                    const harianSheetName = workbook.SheetNames.find(name => name.toLowerCase().includes('catatan harian') || name.toLowerCase().includes('transaksi') || name.toLowerCase().includes('harian'));
+                    if (harianSheetName) {
+                        const worksheet = workbook.Sheets[harianSheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                        if (jsonData && jsonData.length > 0) {
+                            const newTxs = [];
+                            jsonData.forEach(row => {
+                                const dateVal = row['Tanggal'] || row['tanggal'] || new Date().toISOString().split('T')[0];
+                                const typeVal = (row['Jenis Transaksi'] || row['jenis'] || row['Type'] || 'pengeluaran').toLowerCase().includes('pemasukan') ? 'pemasukan' : 'pengeluaran';
+                                const catVal = row['Kategori'] || row['kategori'] || 'Lainnya 🌸';
+                                const amountVal = parseFloat(row['Jumlah'] || row['jumlah'] || row['Nominal'] || 0);
+                                const descVal = row['Keterangan'] || row['keterangan'] || '-';
+
+                                if (amountVal > 0) {
+                                    newTxs.push({
+                                        id: Date.now() + Math.random(),
+                                        date: String(dateVal),
+                                        type: typeVal,
+                                        category: String(catVal),
+                                        amount: amountVal,
+                                        description: String(descVal)
+                                    });
+                                }
                             });
-                            importedCount++;
+                            if (newTxs.length > 0) {
+                                transactions = newTxs;
+                                importedAny = true;
+                            }
+                        }
+                    }
+
+                    // 2. Detection & Reading Target Tabungan Sheet
+                    const targetSheetName = workbook.SheetNames.find(name => name.toLowerCase().includes('target tabungan') || name.toLowerCase().includes('target'));
+                    if (targetSheetName) {
+                        const worksheet = workbook.Sheets[targetSheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                        if (jsonData && jsonData.length > 0) {
+                            const newTargets = [];
+                            jsonData.forEach((row, idx) => {
+                                const titleVal = row['Nama Target'] || row['Target'] || `Target #${idx+1}`;
+                                const iconVal = row['Emoji'] || row['Icon'] || '🎯';
+                                const goalVal = parseFloat(row['Target Nominal Total'] || row['Target Nominal'] || row['Goal'] || 0);
+                                const collectedVal = parseFloat(row['Nominal Terkumpul'] || row['Terkumpul'] || 0);
+
+                                if (goalVal > 0) {
+                                    const deposits = [];
+                                    if (collectedVal > 0) {
+                                        deposits.push({
+                                            id: Date.now() + idx,
+                                            date: new Date().toISOString().split('T')[0],
+                                            amount: collectedVal,
+                                            note: 'Setoran Impor Excel'
+                                        });
+                                    }
+                                    newTargets.push({
+                                        id: Date.now() + idx + 10,
+                                        title: String(titleVal),
+                                        icon: String(iconVal),
+                                        goal: goalVal,
+                                        deposits: deposits
+                                    });
+                                }
+                            });
+                            if (newTargets.length > 0) {
+                                targets = newTargets;
+                                importedAny = true;
+                            }
+                        }
+                    }
+
+                    // 3. Detection & Reading Utang Piutang Sheet
+                    const debtSheetName = workbook.SheetNames.find(name => name.toLowerCase().includes('utang piutang') || name.toLowerCase().includes('utang') || name.toLowerCase().includes('piutang'));
+                    if (debtSheetName) {
+                        const worksheet = workbook.Sheets[debtSheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                        if (jsonData && jsonData.length > 0) {
+                            const newDebts = [];
+                            jsonData.forEach((row, idx) => {
+                                const personVal = row['Nama Pihak'] || row['Nama'] || row['Pihak'] || 'Tanpa Nama';
+                                const typeRaw = String(row['Tipe'] || row['tipe'] || 'utang').toLowerCase();
+                                const typeVal = typeRaw.includes('piutang') ? 'piutang' : 'utang';
+                                const amountVal = parseFloat(row['Total Nominal'] || row['Nominal'] || row['Jumlah'] || 0);
+                                const paidVal = parseFloat(row['Terbayar (Cicilan)'] || row['Cicilan'] || row['Terbayar'] || 0);
+                                const dueDateVal = row['Jatuh Tempo'] || row['due_date'] || '';
+                                const statusRaw = String(row['Status'] || '').toLowerCase();
+                                const isPaid = statusRaw.includes('lunas') || (paidVal >= amountVal && amountVal > 0);
+
+                                if (amountVal > 0) {
+                                    const installments = [];
+                                    if (paidVal > 0) {
+                                        installments.push({
+                                            id: Date.now() + idx,
+                                            date: new Date().toISOString().split('T')[0],
+                                            amount: paidVal,
+                                            note: 'Cicilan Impor Excel'
+                                        });
+                                    }
+                                    newDebts.push({
+                                        id: Date.now() + idx + 20,
+                                        type: typeVal,
+                                        person: String(personVal),
+                                        amount: amountVal,
+                                        dueDate: String(dueDateVal),
+                                        description: 'Impor dari Excel',
+                                        installments: installments,
+                                        paid: isPaid
+                                    });
+                                }
+                            });
+                            if (newDebts.length > 0) {
+                                debts = newDebts;
+                                importedAny = true;
+                            }
+                        }
+                    }
+
+                    // 4. Detection & Reading Sheet Mutasi Bank Kustom
+                    const newMutations = [];
+                    const foundBanks = [];
+
+                    workbook.SheetNames.forEach(sheetName => {
+                        if (sheetName.toLowerCase().startsWith('mutasi - ')) {
+                            const bankName = sheetName.replace(/mutasi - /i, '').trim();
+                            if (bankName) {
+                                if (!foundBanks.includes(bankName)) foundBanks.push(bankName);
+                                const worksheet = workbook.Sheets[sheetName];
+                                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                                jsonData.forEach((row, idx) => {
+                                    const dateVal = row['Tanggal'] || new Date().toISOString().split('T')[0];
+                                    const descVal = row['Keterangan'] || '-';
+                                    const debitVal = parseFloat(row['Debit (Masuk)'] || row['Debit'] || 0);
+                                    const kreditVal = parseFloat(row['Kredit (Keluar)'] || row['Kredit'] || 0);
+
+                                    if (debitVal > 0) {
+                                        newMutations.push({
+                                            id: Date.now() + idx + Math.random(),
+                                            bank: bankName,
+                                            date: String(dateVal),
+                                            type: 'debit',
+                                            amount: debitVal,
+                                            description: String(descVal)
+                                        });
+                                    }
+                                    if (kreditVal > 0) {
+                                        newMutations.push({
+                                            id: Date.now() + idx + Math.random() + 0.5,
+                                            bank: bankName,
+                                            date: String(dateVal),
+                                            type: 'kredit',
+                                            amount: kreditVal,
+                                            description: String(descVal)
+                                        });
+                                    }
+                                });
+                            }
                         }
                     });
 
-                    saveData();
-                    alert(`Berhasil mengimpor ${importedCount} data transaksi!`);
+                    if (newMutations.length > 0) {
+                        bankMutations = newMutations;
+                        foundBanks.forEach(b => {
+                            if (!bankAccounts.includes(b)) bankAccounts.push(b);
+                        });
+                        importedAny = true;
+                    }
+
+                    if (importedAny) {
+                        saveData();
+                        alert("✨ Data Excel Berhasil Diimpor Secara Otomatis ke Sistem Aplikasi!");
+                    } else {
+                        alert("Format Sheet Excel tidak dikenali atau kosong. Pastikan menggunakan file hasil Ekspor Aplikasi.");
+                    }
+
                 } catch (err) {
-                    alert("Format file Excel tidak valid atau rusak.");
+                    console.error(err);
+                    alert("Gagal membaca file Excel! Pastikan file berformat Excel (.xlsx / .xls) yang valid.");
                 }
             };
             reader.readAsArrayBuffer(file);
-            e.target.value = '';
+            event.target.value = '';
         }
 
-        function handleImportBankMutations(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+        function handleImportBankMutations(event) {
+            handleImportExcel(event);
+        }
 
-            const currentBank = document.getElementById('bank-select').value || bankAccounts[0];
+        function exportExcel() {
+            const wb = XLSX.utils.book_new();
 
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                try {
-                    const data = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const json = XLSX.utils.sheet_to_json(worksheet);
+            // 1. Sheet Transaksi Harian
+            const txData = transactions.map(t => ({
+                'Tanggal': t.date,
+                'Jenis Transaksi': t.type === 'pemasukan' ? 'Pemasukan' : 'Pengeluaran',
+                'Kategori': t.category,
+                'Keterangan': t.description,
+                'Jumlah': t.amount
+            }));
+            const ws1 = XLSX.utils.json_to_sheet(txData);
+            XLSX.utils.book_append_sheet(wb, ws1, 'Catatan Harian');
 
-                    let importedCount = 0;
-                    json.forEach(row => {
-                        const debit = parseFloat(row["Debit (Rp)"] || 0);
-                        const kredit = parseFloat(row["Kredit (Rp)"] || 0);
-
-                        if (row["Tanggal"] && (debit > 0 || kredit > 0)) {
-                            bankMutations.push({
-                                id: Date.now() + Math.random(),
-                                bank: currentBank,
-                                date: String(row["Tanggal"]),
-                                type: debit > 0 ? 'debit' : 'kredit',
-                                amount: debit > 0 ? debit : kredit,
-                                description: row["Keterangan"] || '-'
-                            });
-                            importedCount++;
-                        }
+            // 2. Sheet Mutasi Bank per Bank
+            bankAccounts.forEach(bank => {
+                let running = 0;
+                const muts = bankMutations
+                    .filter(m => m.bank === bank)
+                    .sort((a, b) => new Date(a.date) - new Date(b.date))
+                    .map(m => {
+                        const debit = m.type === 'debit' ? m.amount : 0;
+                        const kredit = m.type === 'kredit' ? m.amount : 0;
+                        running += (debit - kredit);
+                        return {
+                            'Tanggal': m.date,
+                            'Keterangan': m.description,
+                            'Debit (Masuk)': debit,
+                            'Kredit (Keluar)': kredit,
+                            'Saldo': running
+                        };
                     });
+                const wsBank = XLSX.utils.json_to_sheet(muts);
+                XLSX.utils.book_append_sheet(wb, wsBank, `Mutasi - ${bank}`);
+            });
 
-                    saveData();
-                    alert(`Berhasil mengimpor ${importedCount} catatan mutasi bank ke rekening ${currentBank}!`);
-                } catch (err) {
-                    alert("Format file Excel tidak valid atau rusak.");
+            // 3. Sheet Target Tabungan
+            const targetData = targets.map(t => {
+                const current = (t.deposits || []).reduce((s, d) => s + d.amount, 0);
+                return {
+                    'Nama Target': t.title,
+                    'Emoji': t.icon,
+                    'Target Nominal Total': t.goal,
+                    'Nominal Terkumpul': current,
+                    'Sisa Kekurangan': Math.max(0, t.goal - current),
+                    'Progress %': `${Math.min(100, Math.round((current / t.goal) * 100))}%`
+                };
+            });
+            const wsTarget = XLSX.utils.json_to_sheet(targetData);
+            XLSX.utils.book_append_sheet(wb, wsTarget, 'Target Tabungan');
+
+            // 4. Sheet Utang Piutang
+            const debtData = debts.map(d => {
+                const paid = getDebtPaidAmount(d);
+                const remaining = Math.max(0, d.amount - paid);
+                return {
+                    'Nama Pihak': d.person,
+                    'Tipe': d.type === 'utang' ? 'Utang Saya' : 'Piutang Saya',
+                    'Total Nominal': d.amount,
+                    'Terbayar (Cicilan)': paid,
+                    'Sisa Nominal': remaining,
+                    'Jatuh Tempo': d.dueDate || '-',
+                    'Status': d.paid || remaining === 0 ? 'LUNAS ✨' : 'BELUM LUNAS'
+                };
+            });
+            const wsDebt = XLSX.utils.json_to_sheet(debtData);
+            XLSX.utils.book_append_sheet(wb, wsDebt, 'Utang Piutang');
+
+            XLSX.writeFile(wb, `Laporan_Keuangan_RichWoman_${new Date().toISOString().split('T')[0]}.xlsx`);
+        }
+
+        function exportBankMutationsExcel() {
+            exportExcel();
+        }
+
+        // ================= SETTINGS & THEME LOGIC =================
+        function toggleSettingsModal(show) {
+            document.getElementById('settingsModal').classList.toggle('hidden', !show);
+        }
+
+        function switchSettingTab(tab) {
+            if (tab === 'theme') {
+                document.getElementById('tabThemeContent').classList.remove('hidden');
+                document.getElementById('tabBackupContent').classList.add('hidden');
+                document.getElementById('tabThemeBtn').className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white";
+                document.getElementById('tabBackupBtn').className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700";
+            } else {
+                document.getElementById('tabThemeContent').classList.add('hidden');
+                document.getElementById('tabBackupContent').classList.remove('hidden');
+                document.getElementById('tabBackupBtn').className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-purple-600 text-purple-900 bg-white";
+                document.getElementById('tabThemeBtn').className = "flex-1 py-3 px-4 text-center text-xs font-bold border-b-2 border-transparent text-purple-500 hover:text-purple-700";
+            }
+        }
+
+        function initThemeEvents() {
+            document.getElementById('bodyOpacity').addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.getElementById('opacityValLabel').textContent = `${Math.round(val * 100)}%`;
+                const overlay = document.getElementById('bodyOverlay');
+                overlay.style.backgroundColor = document.getElementById('bodyBgColor').value;
+                overlay.style.opacity = val;
+            });
+
+            document.getElementById('bodyBgColor').addEventListener('input', (e) => {
+                document.body.style.backgroundColor = e.target.value;
+                document.getElementById('bodyOverlay').style.backgroundColor = e.target.value;
+            });
+
+            document.getElementById('headerBgColor').addEventListener('input', (e) => {
+                document.getElementById('mainHeader').style.backgroundColor = e.target.value;
+            });
+
+            document.getElementById('headerTextColor').addEventListener('input', (e) => {
+                document.getElementById('mainHeader').style.color = e.target.value;
+            });
+
+            document.getElementById('headerBgUpload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        currentCustomBg = evt.target.result;
+                        document.getElementById('mainHeader').style.backgroundImage = `url(${currentCustomBg})`;
+                        document.getElementById('resetBgImgBtn').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
                 }
+            });
+
+            document.getElementById('bodyBgUpload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        currentBodyBgImg = evt.target.result;
+                        document.body.style.backgroundImage = `url(${currentBodyBgImg})`;
+                        document.getElementById('resetBodyBgImgBtn').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById('headerIconUpload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        currentCustomIcon = evt.target.result;
+                        document.getElementById('headerEmoji').classList.add('hidden');
+                        const img = document.getElementById('headerCustomImg');
+                        img.src = currentCustomIcon;
+                        img.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function selectEmoji(emoji) {
+            currentCustomIcon = null;
+            document.getElementById('headerCustomImg').classList.add('hidden');
+            const span = document.getElementById('headerEmoji');
+            span.textContent = emoji;
+            span.classList.remove('hidden');
+        }
+
+        function resetHeaderBgImage() {
+            currentCustomBg = null;
+            document.getElementById('mainHeader').style.backgroundImage = 'none';
+            document.getElementById('resetBgImgBtn').classList.add('hidden');
+            document.getElementById('headerBgUpload').value = '';
+        }
+
+        function resetBodyBgImage() {
+            currentBodyBgImg = null;
+            document.body.style.backgroundImage = 'none';
+            document.getElementById('resetBodyBgImgBtn').classList.add('hidden');
+            document.getElementById('bodyBgUpload').value = '';
+        }
+
+        function previewFontChange(fontClass) {
+            const fontClasses = ['font-quicksand', 'font-poppins', 'font-inter', 'font-roboto', 'font-nunito', 'font-merriweather', 'font-playfair', 'font-lora', 'font-garamond', 'font-cinzel', 'font-montserrat', 'font-lato', 'font-source-sans'];
+            fontClasses.forEach(c => document.body.classList.remove(c));
+            document.body.classList.add(fontClass);
+        }
+
+        function saveThemeSettings() {
+            const settings = {
+                headerMainTitle: document.getElementById('headerMainTitleInput').value,
+                headerSubTitle: document.getElementById('headerSubTitleInput').value,
+                headerBgColor: document.getElementById('headerBgColor').value,
+                headerTextColor: document.getElementById('headerTextColor').value,
+                bodyBgColor: document.getElementById('bodyBgColor').value,
+                bodyOpacity: document.getElementById('bodyOpacity').value,
+                fontClass: document.getElementById('fontSelect').value,
+                customBg: currentCustomBg,
+                customBodyBg: currentBodyBgImg,
+                customIcon: currentCustomIcon,
+                emojiIcon: document.getElementById('headerEmoji').textContent,
+                backupEmail: document.getElementById('backupEmail').value,
+                autoBackup: document.getElementById('autoBackupToggle').checked,
+                navBtnBgColor: document.getElementById('navBtnBgColor').value,
+                navBtnTextColor: document.getElementById('navBtnTextColor').value,
+                navBtnActiveBgColor: document.getElementById('navBtnActiveBgColor').value,
+                navBtnActiveTextColor: document.getElementById('navBtnActiveTextColor').value
             };
-            reader.readAsArrayBuffer(file);
-            e.target.value = '';
+
+            localStorage.setItem('bela_settings', JSON.stringify(settings));
+            applySettings(settings);
+            toggleSettingsModal(false);
+            alert("Pengaturan berhasil disimpan! ✨");
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('bela_settings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                
+                if (settings.headerMainTitle) document.getElementById('headerMainTitleInput').value = settings.headerMainTitle;
+                if (settings.headerSubTitle) document.getElementById('headerSubTitleInput').value = settings.headerSubTitle;
+                if (settings.headerBgColor) document.getElementById('headerBgColor').value = settings.headerBgColor;
+                if (settings.headerTextColor) document.getElementById('headerTextColor').value = settings.headerTextColor;
+                if (settings.bodyBgColor) document.getElementById('bodyBgColor').value = settings.bodyBgColor;
+                if (settings.bodyOpacity !== undefined) {
+                    document.getElementById('bodyOpacity').value = settings.bodyOpacity;
+                    document.getElementById('opacityValLabel').textContent = `${Math.round(settings.bodyOpacity * 100)}%`;
+                }
+                if (settings.fontClass) document.getElementById('fontSelect').value = settings.fontClass;
+                if (settings.backupEmail) document.getElementById('backupEmail').value = settings.backupEmail;
+                if (settings.autoBackup !== undefined) document.getElementById('autoBackupToggle').checked = settings.autoBackup;
+
+                if (settings.navBtnBgColor) document.getElementById('navBtnBgColor').value = settings.navBtnBgColor;
+                if (settings.navBtnTextColor) document.getElementById('navBtnTextColor').value = settings.navBtnTextColor;
+                if (settings.navBtnActiveBgColor) document.getElementById('navBtnActiveBgColor').value = settings.navBtnActiveBgColor;
+                if (settings.navBtnActiveTextColor) document.getElementById('navBtnActiveTextColor').value = settings.navBtnActiveTextColor;
+
+                currentCustomBg = settings.customBg || null;
+                currentBodyBgImg = settings.customBodyBg || null;
+                currentCustomIcon = settings.customIcon || null;
+
+                applySettings(settings);
+            } else {
+                applyNavbarColors();
+            }
+        }
+
+        function applySettings(s) {
+            document.getElementById('headerMainTitle').textContent = s.headerMainTitle || "Halo Cantik✨";
+            document.getElementById('headerSubTitle').textContent = s.headerSubTitle || "Keuangan Personal Go To Richy Woman ✨";
+
+            const header = document.getElementById('mainHeader');
+            if (s.headerBgColor) header.style.backgroundColor = s.headerBgColor;
+            if (s.headerTextColor) header.style.color = s.headerTextColor;
+
+            if (s.customBg) {
+                header.style.backgroundImage = `url(${s.customBg})`;
+                document.getElementById('resetBgImgBtn').classList.remove('hidden');
+            } else {
+                header.style.backgroundImage = 'none';
+            }
+
+            if (s.bodyBgColor) document.body.style.backgroundColor = s.bodyBgColor;
+
+            if (s.customBodyBg) {
+                document.body.style.backgroundImage = `url(${s.customBodyBg})`;
+                document.getElementById('resetBodyBgImgBtn').classList.remove('hidden');
+            } else {
+                document.body.style.backgroundImage = 'none';
+            }
+
+            const overlay = document.getElementById('bodyOverlay');
+            overlay.style.backgroundColor = s.bodyBgColor || '#fcebed';
+            overlay.style.opacity = s.bodyOpacity !== undefined ? s.bodyOpacity : 0;
+
+            if (s.fontClass) previewFontChange(s.fontClass);
+
+            if (s.customIcon) {
+                document.getElementById('headerEmoji').classList.add('hidden');
+                const img = document.getElementById('headerCustomImg');
+                img.src = s.customIcon;
+                img.classList.remove('hidden');
+            } else if (s.emojiIcon) {
+                document.getElementById('headerCustomImg').classList.add('hidden');
+                const span = document.getElementById('headerEmoji');
+                span.textContent = s.emojiIcon;
+                span.classList.remove('hidden');
+            }
+
+            applyNavbarColors();
+        }
+
+        function applyNavbarColors() {
+            const navBtnBgColor = document.getElementById('navBtnBgColor').value || '#f3e8ff';
+            const navBtnTextColor = document.getElementById('navBtnTextColor').value || '#9333ea';
+            const navBtnActiveBgColor = document.getElementById('navBtnActiveBgColor').value || '#a855f7';
+            const navBtnActiveTextColor = document.getElementById('navBtnActiveTextColor').value || '#ffffff';
+
+            const tabs = ['dashboard', 'transactions', 'bank', 'target', 'debt'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (btn) {
+                    if (t === activeTab) {
+                        btn.style.backgroundColor = navBtnActiveBgColor;
+                        btn.style.color = navBtnActiveTextColor;
+                    } else {
+                        btn.style.backgroundColor = navBtnBgColor;
+                        btn.style.color = navBtnTextColor;
+                    }
+                }
+            });
         }
 
         function triggerManualBackup() {
             const email = document.getElementById('backupEmail').value;
             if (!email) {
-                alert("Harap masukkan alamat email tujuan backup terlebih dahulu.");
+                alert("Masukkan alamat email terlebih dahulu!");
                 return;
             }
-            alert(`File backup telah berhasil disimulasikan & dikirim ke alamat email: ${email}`);
+            exportExcel();
+            alert(`File backup telah diunduh! Silakan lampirkan file Excel ke email tujuan (${email}).`);
         }
     </script>
 </body>
