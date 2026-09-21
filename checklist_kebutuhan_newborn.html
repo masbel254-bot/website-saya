@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Kebutuhan Newborn Ala Bumilgenz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            pink: '#FFE5EC',
+                            headerPink: '#FFB3C6',
+                            brightPink: '#FF4D6D',
+                            rose: '#FF758F',
+                            cardBg: '#FFF5F7',
+                            borderPink: '#FFCCD5',
+                            cream: '#FFF9FB',
+                            darkText: '#593D3B',
+                            lightText: '#8C686B',
+                            badge: '#FFF0F5'
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #FDF0F3;
+            background-image: radial-gradient(#FFCCD5 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
+            color: #593D3B;
+        }
+
+        .title-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .clipboard-border {
+            border: 4px solid #FFB3C6;
+            box-shadow: 0 12px 28px rgba(255, 117, 143, 0.15);
+        }
+
+        .custom-checkbox {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #FF8FA3;
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            background-color: white;
+            transition: all 0.2s ease;
+        }
+
+        .custom-checkbox:checked {
+            background-color: #FF4D6D;
+            border-color: #FF4D6D;
+        }
+
+        .custom-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cute-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cute-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 117, 143, 0.12);
+        }
+
+        /* Custom Scrollbar for smoother viewing */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFE5EC;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF8FA3;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-4 px-2 sm:px-6 lg:px-8 flex flex-col justify-between items-center">
+
+    <main class="w-full max-w-3xl bg-white rounded-3xl p-4 sm:p-7 clipboard-border relative my-2 sm:my-6">
+        
+        <!-- Clipboard Clip Graphic -->
+        <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-32 sm:w-44 h-10 bg-[#FF8FA3] rounded-t-2xl border-4 border-b-0 border-[#FFB3C6] flex items-center justify-center shadow-sm">
+            <div class="w-12 sm:w-16 h-3 bg-white/70 rounded-full"></div>
+        </div>
+
+        <!-- Header Section -->
+        <header class="text-center pt-4 pb-4 border-b-2 border-dashed border-pastel-borderPink">
+            <div class="flex justify-between items-center mb-2 px-2">
+                <span class="text-xs sm:text-sm font-semibold bg-pastel-pink text-pastel-brightPink px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                    <i class="fa-solid fa-heart text-xs"></i> Special For Moms
+                </span>
+                <span class="text-xs sm:text-sm font-bold bg-pastel-brightPink text-white px-3 sm:px-4 py-1 rounded-full shadow-md animate-pulse">
+                    Pakaian 0-3 BULAN
+                </span>
+            </div>
+
+            <h1 class="title-font text-2xl sm:text-4xl font-bold text-pastel-brightPink drop-shadow-sm mt-2 flex items-center justify-center gap-2">
+                <span>Checklist</span>
+                <i class="fa-solid fa-baby text-pastel-rose text-2xl sm:text-3xl"></i>
+            </h1>
+            <h2 class="title-font text-3xl sm:text-5xl font-extrabold text-pastel-brightPink tracking-wide mb-1">
+                Kebutuhan Newborn
+            </h2>
+            <div class="inline-block bg-pastel-pink px-4 py-1 rounded-full mt-1">
+                <p class="title-font text-sm sm:text-lg font-bold text-pastel-rose tracking-wider flex items-center gap-1">
+                    ALA BUMILGENZ <i class="fa-solid fa-heart text-pastel-brightPink"></i>
+                </p>
+            </div>
+        </header>
+
+        <section class="mt-6">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="title-font text-lg sm:text-xl font-bold text-pastel-darkText flex items-center gap-2">
+                    <i class="fa-solid fa-shirt text-pastel-rose"></i> Target Pakaian (PCS)
+                </h3>
+                <span class="text-xs text-pastel-lightText font-medium">Klik +/- untuk sesuaikan target</span>
+            </div>
+
+            <!-- Target Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="categoryGrid">
+                <!-- Javascript will render categories here -->
+            </div>
+        </section>
+
+        <section class="mt-8">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-4">
+                <h3 class="title-font text-lg sm:text-xl font-bold text-pastel-darkText flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-pastel-rose"></i> Rincian Belanja & Harga
+                </h3>
+                <button onclick="openModal()" class="bg-pastel-rose hover:bg-pastel-brightPink text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-plus"></i> Tambah Item Baru
+                </button>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto rounded-2xl border-2 border-pastel-borderPink bg-pastel-cream">
+                <table class="w-full text-left text-xs sm:text-sm">
+                    <thead class="bg-pastel-pink text-pastel-darkText font-bold title-font border-b-2 border-pastel-borderPink">
+                        <tr>
+                            <th class="p-2 sm:p-3 text-center w-12">NO.</th>
+                            <th class="p-2 sm:p-3 text-center w-12">STATUS</th>
+                            <th class="p-2 sm:p-3">ITEM</th>
+                            <th class="p-2 sm:p-3 text-right">HARGA (Rp)</th>
+                            <th class="p-2 sm:p-3 text-center w-16">AKSI</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemList" class="divide-y divide-pastel-borderPink/60">
+                        <!-- Items rendered via Javascript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mt-6 bg-pastel-pink/50 rounded-2xl p-4 sm:p-5 border-2 border-pastel-borderPink flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center text-pastel-brightPink text-2xl sm:text-3xl shadow-sm border border-pastel-borderPink">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h4 class="title-font text-xl sm:text-2xl font-extrabold text-pastel-darkText">TOTAL ESTIMASI</h4>
+                    <p class="text-xs text-pastel-lightText" id="checkedCountSummary">0 dari 13 item terpilih</p>
+                </div>
+            </div>
+
+            <div class="bg-white px-5 py-2.5 rounded-2xl border-2 border-pastel-brightPink/30 shadow-sm text-center w-full sm:w-auto">
+                <span class="title-font text-2xl sm:text-3xl font-extrabold text-pastel-brightPink" id="totalPriceDisplay">
+                    0K
+                </span>
+                <span class="block text-[10px] text-pastel-lightText font-semibold">RP <span id="fullTotalFormat">0</span></span>
+            </div>
+        </section>
+
+        <footer class="mt-6 pt-4 border-t-2 border-dashed border-pastel-borderPink grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="bg-pastel-cardBg p-3 rounded-xl border border-pastel-borderPink/60 flex items-start gap-2">
+                <i class="fa-solid fa-note-sticky text-pastel-rose text-base mt-0.5"></i>
+                <div>
+                    <span class="font-bold text-pastel-darkText block">Catatan:</span>
+                    <p class="text-pastel-lightText leading-relaxed">Jumlah bisa menyesuaikan kebutuhan & preferensi masing-masing ya, moms! ♡</p>
+                </div>
+            </div>
+            <div class="bg-pastel-cardBg p-3 rounded-xl border border-pastel-borderPink/60 flex items-start gap-2">
+                <i class="fa-solid fa-heart text-pastel-brightPink text-base mt-0.5"></i>
+                <div>
+                    <span class="font-bold text-pastel-darkText block">Tips Bumilgenz:</span>
+                    <p class="text-pastel-lightText leading-relaxed">Pilih bahan yang lembut, nyaman, dan aman buat si kecil & bunda ya! ♡</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Bottom Action Bar -->
+        <div class="mt-5 flex justify-between items-center text-xs">
+            <button onclick="resetData()" class="text-pastel-lightText hover:text-pastel-brightPink flex items-center gap-1 transition">
+                <i class="fa-solid fa-rotate-left"></i> Reset ke awal
+            </button>
+            <span class="text-pastel-lightText italic">Pilihan Terbaik Untuk Si Buah Hati ✨</span>
+        </div>
+
+    </main>
+
+    <!-- Add/Edit Item Modal -->
+    <div id="itemModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-md border-4 border-pastel-borderPink shadow-2xl animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="title-font text-xl font-bold text-pastel-darkText" id="modalTitle">Tambah Item Baru</h3>
+                <button onclick="closeModal()" class="text-pastel-lightText hover:text-pastel-brightPink text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="itemForm" onsubmit="saveItem(event)" class="space-y-4">
+                <input type="hidden" id="editIndex" value="-1">
+                <div>
+                    <label class="block text-xs font-bold text-pastel-darkText mb-1">Nama Item / Pakaian</label>
+                    <input type="text" id="itemName" required placeholder="Contoh: 3set fluffy tgn panjang" class="w-full px-3 py-2 border-2 border-pastel-borderPink rounded-xl focus:outline-none focus:border-pastel-brightPink text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-pastel-darkText mb-1">Harga Total Item (Rupiah)</label>
+                    <input type="number" id="itemPrice" required placeholder="Contoh: 85000" min="0" class="w-full px-3 py-2 border-2 border-pastel-borderPink rounded-xl focus:outline-none focus:border-pastel-brightPink text-sm">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-xs hover:bg-gray-200">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2 bg-pastel-brightPink text-white rounded-xl font-bold text-xs hover:bg-pastel-rose shadow-md">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initial Default Data matching the original image
+        const defaultCategories = [
+            { id: 'baju_panjang', name: 'BAJU PANJANG', target: 6, current: 6, icon: 'fa-shirt' },
+            { id: 'baju_pendek', name: 'BAJU PENDEK', target: 5, current: 5, icon: 'fa-shirt' },
+            { id: 'baju_kutung', name: 'BAJU KUTUNG', target: 6, current: 6, icon: 'fa-vest' },
+            { id: 'kimono_pendek', name: 'KIMONO PENDEK', target: 1, current: 1, icon: 'fa-user-nurse' },
+            { id: 'bodysuit', name: 'BODYSUIT/ JUMPER', target: 7, current: 7, icon: 'fa-baby-carriage' },
+            { id: 'singlet', name: 'SINGLET', target: 6, current: 6, icon: 'fa-vest-patches' }
+        ];
+
+        const defaultItems = [
+            { name: "3set fluffy tgn panjang", price: 85000, checked: true },
+            { name: "3set fluffy tgn panjang", price: 103000, checked: true },
+            { name: "3set fluffy tgn pendek", price: 80000, checked: true },
+            { name: "1set libby tgn pendek", price: 5000, checked: true },
+            { name: "1 set miyo tgn pendek", price: 23000, checked: true },
+            { name: "2 miyo kutung", price: 20000, checked: true },
+            { name: "1 set miyo kutung", price: 32000, checked: true },
+            { name: "3 set moku kutung", price: 32000, checked: true },
+            { name: "1 set kimono little jenna", price: 76000, checked: true },
+            { name: "1 bodysuit crucil", price: 82000, checked: true },
+            { name: "1 bodyasuit crucil motif", price: 106000, checked: true },
+            { name: "4 bodysuit payifang pink", price: 84000, checked: true },
+            { name: "1 jumper zeia kids custom huruf", price: 138000, checked: true }
+        ];
+
+        // State Management
+        let categories = [];
+        let items = [];
+
+        function loadData() {
+            const savedCategories = localStorage.getItem('bumilgenz_categories');
+            const savedItems = localStorage.getItem('bumilgenz_items');
+
+            if (savedCategories) {
+                categories = JSON.parse(savedCategories);
+            } else {
+                categories = JSON.parse(JSON.stringify(defaultCategories));
+            }
+
+            if (savedItems) {
+                items = JSON.parse(savedItems);
+            } else {
+                items = JSON.parse(JSON.stringify(defaultItems));
+            }
+
+            renderAll();
+        }
+
+        function saveData() {
+            localStorage.setItem('bumilgenz_categories', JSON.stringify(categories));
+            localStorage.setItem('bumilgenz_items', JSON.stringify(items));
+        }
+
+        function renderCategories() {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = '';
+
+            categories.forEach((cat, index) => {
+                const isComplete = cat.current >= cat.target;
+                const cardHtml = `
+                    <div class="cute-card bg-pastel-cardBg rounded-2xl p-3 border-2 border-pastel-borderPink flex flex-col justify-between relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[11px] font-bold title-font tracking-tight text-pastel-darkText uppercase truncate">${cat.name}</span>
+                            <i class="fa-solid ${cat.icon} text-pastel-rose text-sm"></i>
+                        </div>
+                        
+                        <!-- Illustration Placeholder SVG -->
+                        <div class="my-1 flex justify-center py-1">
+                            <div class="w-10 h-10 bg-pastel-pink/60 rounded-full flex items-center justify-center text-pastel-brightPink">
+                                <i class="fa-solid fa-shirt text-lg"></i>
+                            </div>
+                        </div>
+
+                        <!-- Counter and adjustment -->
+                        <div class="mt-1 bg-white rounded-xl p-1.5 border border-pastel-borderPink/60 text-center">
+                            <div class="title-font text-base font-extrabold ${isComplete ? 'text-pastel-brightPink' : 'text-pastel-darkText'}">
+                                ${cat.current} <span class="text-xs font-medium text-pastel-lightText">/ ${cat.target} PCS</span>
+                            </div>
+                            <div class="flex justify-center items-center gap-2 mt-1">
+                                <button onclick="updateCategoryCount(${index}, -1)" class="w-5 h-5 bg-pastel-pink hover:bg-pastel-borderPink text-pastel-darkText font-bold rounded-full text-xs flex items-center justify-center transition">
+                                    -
+                                </button>
+                                <button onclick="updateCategoryCount(${index}, 1)" class="w-5 h-5 bg-pastel-brightPink hover:bg-pastel-rose text-white font-bold rounded-full text-xs flex items-center justify-center transition">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        function updateCategoryCount(index, change) {
+            if (categories[index].current + change >= 0) {
+                categories[index].current += change;
+                saveData();
+                renderCategories();
+            }
+        }
+
+        function renderItems() {
+            const list = document.getElementById('itemList');
+            list.innerHTML = '';
+
+            let checkedTotal = 0;
+            let checkedCount = 0;
+
+            items.forEach((item, index) => {
+                if (item.checked) {
+                    checkedTotal += item.price;
+                    checkedCount++;
+                }
+
+                // Format price to K or standard number
+                const formattedPrice = item.price >= 1000 
+                    ? (item.price / 1000) + 'K' 
+                    : item.price;
+
+                const rowHtml = `
+                    <tr class="hover:bg-pastel-pink/20 transition ${item.checked ? 'bg-white' : 'bg-gray-50/50 opacity-70'}">
+                        <td class="p-2 sm:p-3 text-center font-bold text-pastel-lightText">${index + 1}.</td>
+                        <td class="p-2 sm:p-3 text-center">
+                            <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleItemCheck(${index})" class="custom-checkbox">
+                        </td>
+                        <td class="p-2 sm:p-3 font-semibold text-pastel-darkText ${item.checked ? '' : 'line-through text-pastel-lightText'}">
+                            ${item.name}
+                        </td>
+                        <td class="p-2 sm:p-3 text-right font-bold title-font text-pastel-brightPink">
+                            ${formattedPrice}
+                        </td>
+                        <td class="p-2 sm:p-3 text-center">
+                            <div class="flex items-center justify-center gap-1">
+                                <button onclick="editItem(${index})" class="text-pastel-lightText hover:text-pastel-brightPink p-1 text-xs">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteItem(${index})" class="text-pastel-lightText hover:text-red-500 p-1 text-xs">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                list.innerHTML += rowHtml;
+            });
+
+            // Update Total Displays
+            const totalInK = checkedTotal >= 1000 
+                ? Math.round(checkedTotal / 1000) + 'K' 
+                : checkedTotal;
+
+            document.getElementById('totalPriceDisplay').innerText = totalInK;
+            document.getElementById('fullTotalFormat').innerText = checkedTotal.toLocaleString('id-ID');
+            document.getElementById('checkedCountSummary').innerText = `${checkedCount} dari ${items.length} item terpilih`;
+        }
+
+        function toggleItemCheck(index) {
+            items[index].checked = !items[index].checked;
+            saveData();
+            renderItems();
+        }
+
+        function openModal(editIdx = -1) {
+            const modal = document.getElementById('itemModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const editInput = document.getElementById('editIndex');
+            const nameInput = document.getElementById('itemName');
+            const priceInput = document.getElementById('itemPrice');
+
+            editInput.value = editIdx;
+
+            if (editIdx >= 0) {
+                modalTitle.innerText = "Edit Item";
+                nameInput.value = items[editIdx].name;
+                priceInput.value = items[editIdx].price;
+            } else {
+                modalTitle.innerText = "Tambah Item Baru";
+                nameInput.value = '';
+                priceInput.value = '';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').classList.add('hidden');
+        }
+
+        function saveItem(e) {
+            e.preventDefault();
+            const editIdx = parseInt(document.getElementById('editIndex').value);
+            const name = document.getElementById('itemName').value.trim();
+            const price = parseInt(document.getElementById('itemPrice').value) || 0;
+
+            if (!name) return;
+
+            if (editIdx >= 0) {
+                items[editIdx].name = name;
+                items[editIdx].price = price;
+            } else {
+                items.push({
+                    name: name,
+                    price: price,
+                    checked: true
+                });
+            }
+
+            saveData();
+            renderItems();
+            closeModal();
+        }
+
+        function editItem(index) {
+            openModal(index);
+        }
+
+        function deleteItem(index) {
+            items.splice(index, 1);
+            saveData();
+            renderItems();
+        }
+
+        function resetData() {
+            categories = JSON.parse(JSON.stringify(defaultCategories));
+            items = JSON.parse(JSON.stringify(defaultItems));
+            saveData();
+            renderAll();
+        }
+
+        function renderAll() {
+            renderCategories();
+            renderItems();
+        }
+
+        window.onload = function() {
+            loadData();
+        };
+    </script>
+</body>
+</html>
